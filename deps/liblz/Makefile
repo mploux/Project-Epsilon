@@ -17,6 +17,7 @@ FILES =		graphics/display.cpp\
 			graphics/obj_loader.cpp\
 			utils/resources.cpp\
 			graphics/textures/texture.cpp\
+			graphics/textures/texture_dds.cpp\
 			graphics/textures/texture_bmp.cpp
 
 COUNT = $(eval COUNT=$(shell echo $(FILES) | sed -r "s/[\t\ ]+/\n/g" | wc -l))

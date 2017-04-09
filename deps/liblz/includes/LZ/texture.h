@@ -19,9 +19,13 @@ namespace lz
 		unsigned int	width;
 		unsigned int	height;
 		unsigned char	*data;
+		unsigned int	data_size;
+		unsigned int	mipMapCount;
+		unsigned int	format;
 	}				t_generic_image;
 
 	t_generic_image load_bmp(const char *path);
+	t_generic_image load_dds(const char *path);
 
 	class Texture
 	{

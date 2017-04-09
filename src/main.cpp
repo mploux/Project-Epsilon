@@ -12,7 +12,7 @@ int main(int ac, char **av)
 	lz::Input	input		= lz::Input(display.getWindow());
 	lz::Timer	timer		= lz::Timer();
 	lz::Mesh	*gun_model	= lz::Resources::loadObj((char *)"data/models/Cerberus.obj")->getMesh();
-	lz::Texture	texture		= lz::Texture("data/textures/Cerberus_A.bmp");
+	lz::Texture texture 	= lz::Texture("data/textures/Cerberus_A.dds");
 
 	double updatedTime	= 0;
 	int frames;

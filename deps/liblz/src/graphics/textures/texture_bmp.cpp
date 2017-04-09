@@ -30,21 +30,20 @@ namespace lz
 		t_generic_image	result;
 		unsigned char 	header[54];
 		unsigned int 	dataPos;
-		unsigned int 	imageSize;
 		FILE 			*file;
 
 		file = get_bmp_file(path);
 		set_bmp_header(file, header);
 		dataPos = *(int*)&(header[0x0A]);
-		imageSize = *(int*)&(header[0x22]);
+		result.data_size = *(int*)&(header[0x22]);
 		result.width = *(int*)&(header[0x12]);
 		result.height = *(int*)&(header[0x16]);
-		if (imageSize == 0)
-			imageSize = result.width * result.height * 3;
+		if (result.data_size == 0)
+			result.data_size = result.width * result.height * 3;
 		if (dataPos == 0)
 			dataPos = 54;
-		result.data = new unsigned char[imageSize];
-		fread(result.data, 1, imageSize, file);
+		result.data = new unsigned char[result.data_size];
+		fread(result.data, 1, result.data_size, file);
 		fclose (file);
 		return result;
 	}
