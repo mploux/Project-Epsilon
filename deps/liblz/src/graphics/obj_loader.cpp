@@ -51,16 +51,28 @@ ObjLoader::ObjLoader(char *path)
 			char **indides_c = str_split(tokens[3], '/');
 
 			int p1 = atoi(indides_a[0]) - 1;
+			free(indides_a[0]);
 			int t1 = atoi(indides_a[1]) - 1;
+			free(indides_a[1]);
 			int n1 = atoi(indides_a[2]) - 1;
+			free(indides_a[2]);
+			free(indides_a);
 
 			int p2 = atoi(indides_b[0]) - 1;
+			free(indides_b[0]);
 			int t2 = atoi(indides_b[1]) - 1;
+			free(indides_b[1]);
 			int n2 = atoi(indides_b[2]) - 1;
+			free(indides_b[2]);
+			free(indides_b);
 
 			int p3 = atoi(indides_c[0]) - 1;
+			free(indides_c[0]);
 			int t3 = atoi(indides_c[1]) - 1;
+			free(indides_c[1]);
 			int n3 = atoi(indides_c[2]) - 1;
+			free(indides_c[2]);
+			free(indides_c);
 
 			VertexIndex a = {p1, t1, n1};
 			VertexIndex b = {p2, t2, n2};
@@ -113,6 +125,7 @@ ObjLoader::ObjLoader(char *path)
 	m_mesh->setTexCoords(m_texCoords);
 	m_mesh->setIndices(m_indices);
 	m_mesh->create();
+	printf("LOL\n");
 }
 
 ObjLoader::~ObjLoader()

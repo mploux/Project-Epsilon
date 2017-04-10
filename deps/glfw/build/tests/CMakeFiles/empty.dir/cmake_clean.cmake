@@ -3,7 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/empty.dir/__/deps/tinycthread.c.o"
   "CMakeFiles/empty.dir/__/deps/glad.c.o"
   "empty.pdb"
-  "empty"
+  "empty.app/Contents/MacOS/empty"
 )
 
 # Per-language clean rules from dependency scanning.

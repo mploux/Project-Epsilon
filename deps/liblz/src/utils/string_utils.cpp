@@ -70,53 +70,64 @@ char		*str_concat(char *str1, char *str2)
 	return (result);
 }
 
-int str_count_char(char *str, char split)
+static char		*getword(const char *s, char c, int i)
 {
-	int i;
-	int n;
+	int		j;
+	char	*result;
 
-	i = 0;
-	n = 0;
-	while(str[i])
+	j = 0;
+	while (s[i + j] != c && s[i + j] != 0)
+		j++;
+	if (!(result = (char *)malloc(sizeof(char) * (j + 1))))
+		return (NULL);
+	j = 0;
+	while ((s[i + j] != c && s[i + j] != 0))
 	{
-		if(str[++i] == split)
-			continue;
-		while(str[i] != split && str[i])
-			i++;
-		n++;
+		result[j] = s[i + j];
+		j++;
 	}
-	return (n);
+	result[j] = 0;
+	j = 0;
+	return (result);
 }
 
-char **str_split(char *str, char split)
+static char		**malloc_words(const char *s, char c)
 {
-	int i;
-	int j;
-	int char_count;
-	int n;
-	int split_count;
-	char **result;
+	int		i;
+	int		num;
+	char	**result;
 
 	i = 0;
-	n = 0;
-	split_count = str_count_char(str, split);
-	if (!(result = (char **)malloc((split_count + 1) * sizeof(char *))))
+	num = 1;
+	if (!s)
 		return (NULL);
-	while (str[i])
+	while (s[i++])
+		if (s[i - 1] != c && (s[i] == c || s[i] == 0))
+			num++;
+	if (!(result = (char **)malloc(sizeof(char *) * num)))
+		return (NULL);
+	return (result);
+}
+
+char			**str_split(char *s, char c)
+{
+	int		i;
+	int		k;
+	char	**result;
+
+	i = 0;
+	k = 0;
+	if (!(result = malloc_words(s, c)))
+		return (NULL);
+	while (s[i])
 	{
-		while (str[i] == split)
-			i++;
-		char_count = 0;
-		while(str[char_count + i] != split && str[char_count + i])
-			char_count++;
-		if (!(result[n] = (char *)malloc((char_count + 1) * sizeof(char))))
-			return (NULL);
-		for (j = 0; j < char_count; j++)
-			result[n][j] = str[i++];
-		result[n][j] = '\0';
-		n++;
+		if (s[i] != c && (s[i - 1] == c || i == 0))
+			result[k++] = getword(s, c, i);
+		result[k] = NULL;
+		i++;
 	}
-	result[n] = NULL;
+	if (!i)
+		result[0] = NULL;
 	return (result);
 }
 

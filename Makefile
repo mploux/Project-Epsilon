@@ -16,41 +16,39 @@ OBJS = $(addprefix bin/,$(FILES:.cpp=.o))
 
 DEPS = -L deps/liblz/ -L deps/glfw/build/src/ -L deps/glew/lib/
 INCLUDES = -I deps/liblz/includes/ -I deps/glfw/include/ -I deps/glew/include/
-DEPSFLAGS = -llz -lglfw3 -lGL -lm -lGLU -lGLEW -lXrandr -lXi -lX11\
-			-lXxf86vm -lpthread -ldl -lXinerama -lXcursor -lrt
+
+# DEPSFLAGS = -llz -lglfw3 -lGL -lm -lGLU -lGLEW -lXrandr -lXi -lX11\
+# -lXxf86vm -lpthread -ldl -lXinerama -lXcursor -lrt
+
+DEPSFLAGS = -llz -lglfw3 -lGLEW -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+
 CXXFLAGS =	-Wall -Wextra -std=c++11
 FLAGS = $(CXXFLAGS) $(INCLUDES)
 
-LIBLZ = deps/liblz/liblz.a
-GLFW = deps/glfw/build/src/libglfw3.a
-GLEW = deps/glew/lib/libGLEW.a
+# LIBLZ = deps/liblz/liblz.a
+# GLFW = deps/glfw/build/src/libglfw3.a
+# GLEW = deps/glew/lib/libGLEW.a
 
 MKDIR = mkdir -p
 RMDIR = rm -rf
 RM = rm -rf
 
 $(NAME): deps $(DIRS) $(OBJS)
-	@make --no-print-directory -C deps/liblz/
+	@echo "Making liblz..."
+	@make --no-print-directory -C deps/liblz/ > /dev/null
+	@printf "\r$(GREEN)Compiling liblz: DONE !$(NO_COLOR)\n";
+	@echo "Making libGLFW..."
+	@make -C deps/glfw/build/ > /dev/null
+	@printf "\r$(GREEN)Compiling libGLFW: DONE !$(NO_COLOR)\n";
+	@echo "Making libGLEW..."
+	@make -C deps/glew/ > /dev/null
+	@rm -f deps/glew/lib/libGLEW.so
+	@rm -f deps/glew/lib/libGLEW.2.0.0.dylib
+	@printf "$(GREEN)Compiling libGLEW: DONE !$(NO_COLOR)\n";
 	@echo "Making planet..."
 	@$(CC) -o $(NAME) $(OBJS) $(CXXFLAGS) $(INCLUDES) $(DEPS) $(DEPSFLAGS)
 	@printf "\r$(GREEN)Compiling planet: DONE !$(NO_COLOR)\n";
 	@echo "\n$(GREEN)Compilation done: $(GREEN_BG)$(NAME)$(NO_COLOR)"
-
-deps: $(LIBLZ) $(GLFW) $(GLEW)
-
-$(LIBLZ):
-	@echo "Making liblz..."
-
-$(GLFW):
-	@echo "Making libGLFW..."
-	@make -C deps/glfw/build/ > /dev/null
-	@printf "\r$(GREEN)Compiling libGLFW: DONE !$(NO_COLOR)\n";
-
-$(GLEW):
-	@echo "Making libGLEW..."
-	@make -C deps/glew/ > /dev/null
-	@rm -f deps/glew/lib/libGLEW.so
-	@printf "$(GREEN)Compiling libGLEW: DONE !$(NO_COLOR)\n";
 
 all: $(NAME)
 

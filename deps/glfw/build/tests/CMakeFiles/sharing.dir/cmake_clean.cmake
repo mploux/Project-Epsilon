@@ -2,7 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/sharing.dir/sharing.c.o"
   "CMakeFiles/sharing.dir/__/deps/glad.c.o"
   "sharing.pdb"
-  "sharing"
+  "sharing.app/Contents/MacOS/sharing"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -112,7 +112,7 @@ GL/glext.h
 GL/glu.h
 -
 
-/home/marc/Documents/dev/planet-renderer/deps/glfw/deps/glad.c
+/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/deps/glad.c
 stdio.h
 -
 stdlib.h
@@ -122,7 +122,7 @@ string.h
 glad/glad.h
 -
 
-/home/marc/Documents/dev/planet-renderer/deps/glfw/examples/wave.c
+/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/examples/wave.c
 stdio.h
 -
 stdlib.h

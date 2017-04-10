@@ -13,6 +13,7 @@ char		*lz::load_file(const char *name)
 	char	*result;
 	char	*tmp;
 
+	fd = 0;
 	put_str("loading:");
 	put_str(name);
 	put_str("\n");

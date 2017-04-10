@@ -20,6 +20,7 @@ int main(int ac, char **av)
 	double delta = 0;
 	double fps = 0;
 
+	int i = 0;
 	while (!display.isClosed())
 	{
 		elapsed = timer.elapsed() - updatedTime;
@@ -31,14 +32,14 @@ int main(int ac, char **av)
 
 		camera.update();
 		camera.control(&input, delta * 0.5f);
-		camera.mouseLook(&input, 0.1);
+		camera.mouseLook(&input, 0.5);
 		input.updateMouseMovement(&display);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		camera.perspective(70.0, display.getWidth(), display.getHeight(), 0.1, 1000.0);
 		shader.bind();
 		shader.setUniform((char*)"projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform((char*)"viewMatrix", camera.getViewMatrix());
-		shader.setUniform((char*)"modelMatrix", mat4::identity());
+		shader.setUniform((char*)"modelMatrix", mat4::rotate(i, i, i));
 
 		gun_model->draw();
 

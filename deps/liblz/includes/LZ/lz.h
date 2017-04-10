@@ -7,7 +7,6 @@
 # include "camera.h"
 # include "mesh.h"
 # include "font.h"
-# include "gl_utils.h"
 # include "input.h"
 # include "resources.h"
 # include "timer.h"

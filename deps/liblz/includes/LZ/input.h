@@ -11,6 +11,8 @@ namespace lz
 	private:
 		double m_x;
 		double m_y;
+		double m_last_x;
+		double m_last_y;
 		double m_dx;
 		double m_dy;
 		bool m_focused;

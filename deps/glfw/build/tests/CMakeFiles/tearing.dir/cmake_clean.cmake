@@ -3,7 +3,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/tearing.dir/__/deps/getopt.c.o"
   "CMakeFiles/tearing.dir/__/deps/glad.c.o"
   "tearing.pdb"
-  "tearing"
+  "tearing.app/Contents/MacOS/tearing"
 )
 
 # Per-language clean rules from dependency scanning.
