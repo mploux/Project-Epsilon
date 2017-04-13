@@ -1,9 +1,8 @@
 file(REMOVE_RECURSE
-  "boing.app/Contents/Resources/glfw.icns"
   "CMakeFiles/boing.dir/boing.c.o"
   "CMakeFiles/boing.dir/__/deps/glad.c.o"
   "boing.pdb"
-  "boing.app/Contents/MacOS/boing"
+  "boing"
 )
 
 # Per-language clean rules from dependency scanning.

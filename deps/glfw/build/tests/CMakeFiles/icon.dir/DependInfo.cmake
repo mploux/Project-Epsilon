@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/deps/glad.c" "/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/build/tests/CMakeFiles/icon.dir/__/deps/glad.c.o"
-  "/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/tests/icon.c" "/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/build/tests/CMakeFiles/icon.dir/icon.c.o"
+  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/tests/CMakeFiles/icon.dir/__/deps/glad.c.o"
+  "/home/marc/Documents/dev/rendering-engine/deps/glfw/tests/icon.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/tests/CMakeFiles/icon.dir/icon.c.o"
   )
-set(CMAKE_C_COMPILER_ID "Clang")
+set(CMAKE_C_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
@@ -17,7 +17,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

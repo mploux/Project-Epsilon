@@ -112,7 +112,7 @@ GL/glext.h
 GL/glu.h
 -
 
-/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/deps/glad.c
+/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c
 stdio.h
 -
 stdlib.h
@@ -122,13 +122,13 @@ string.h
 glad/glad.h
 -
 
-/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/examples/simple.c
+/home/marc/Documents/dev/rendering-engine/deps/glfw/examples/simple.c
 glad/glad.h
 -
 GLFW/glfw3.h
 -
 linmath.h
-/Users/mploux/Desktop/perso/github/rendering-engine/deps/glfw/examples/linmath.h
+/home/marc/Documents/dev/rendering-engine/deps/glfw/examples/linmath.h
 stdlib.h
 -
 stdio.h

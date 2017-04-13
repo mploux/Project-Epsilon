@@ -2,7 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/icon.dir/icon.c.o"
   "CMakeFiles/icon.dir/__/deps/glad.c.o"
   "icon.pdb"
-  "icon.app/Contents/MacOS/icon"
+  "icon"
 )
 
 # Per-language clean rules from dependency scanning.

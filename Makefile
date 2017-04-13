@@ -17,10 +17,10 @@ OBJS = $(addprefix bin/,$(FILES:.cpp=.o))
 DEPS = -L deps/liblz/ -L deps/glfw/build/src/ -L deps/glew/lib/
 INCLUDES = -I deps/liblz/includes/ -I deps/glfw/include/ -I deps/glew/include/
 
-# DEPSFLAGS = -llz -lglfw3 -lGL -lm -lGLU -lGLEW -lXrandr -lXi -lX11\
-# -lXxf86vm -lpthread -ldl -lXinerama -lXcursor -lrt
+DEPSFLAGS = -llz -lglfw3 -lGL -lm -lGLU -lGLEW -lXrandr -lXi -lX11\
+-lXxf86vm -lpthread -ldl -lXinerama -lXcursor -lrt
 
-DEPSFLAGS = -llz -lglfw3 -lGLEW -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+#DEPSFLAGS = -llz -lglfw3 -lGLEW -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
 
 CXXFLAGS =	-Wall -Wextra -std=c++11
 FLAGS = $(CXXFLAGS) $(INCLUDES)
