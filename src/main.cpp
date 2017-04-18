@@ -12,7 +12,11 @@ int main(int ac, char **av)
 	lz::Input	input		= lz::Input(display.getWindow());
 	lz::Timer	timer		= lz::Timer();
 	lz::Mesh	*gun_model	= lz::Resources::loadObj((char *)"data/models/Cerberus.obj")->getMesh();
-	lz::Texture texture 	= lz::Texture("data/textures/Cerberus_A.dds");
+
+	lz::Texture *albedo_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_A.dds");
+	lz::Texture *normal_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_N.dds");
+	lz::Texture *roughness_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_R.dds");
+	lz::Texture *metalic_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_M.dds");
 
 	double updatedTime	= 0;
 	int frames;
@@ -28,11 +32,10 @@ int main(int ac, char **av)
 		updatedTime = timer.elapsed();
 		fps = 1000.0 / elapsed;
 
-		texture.bind();
 
 		camera.update();
-		camera.control(&input, delta * 0.5f);
-		camera.mouseLook(&input, 0.5);
+		camera.control(&input, delta * 0.1f);
+		camera.mouseLook(&input, 0.1);
 		input.updateMouseMovement(&display);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		camera.perspective(70.0, display.getWidth(), display.getHeight(), 0.1, 1000.0);
@@ -40,7 +43,19 @@ int main(int ac, char **av)
 		shader.setUniform((char*)"projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform((char*)"viewMatrix", camera.getViewMatrix());
 		shader.setUniform((char*)"modelMatrix", mat4::rotate(i, i, i));
+		shader.setUniform((char*)"albedo_texture", 0);
+		shader.setUniform((char*)"normal_texture", 1);
+		shader.setUniform((char*)"roughness_texture", 2);
+		shader.setUniform((char*)"metalic_texture", 3);
 
+		glActiveTexture(GL_TEXTURE0);
+		albedo_texture->bind();
+		glActiveTexture(GL_TEXTURE1);
+		normal_texture->bind();
+		glActiveTexture(GL_TEXTURE2);
+		roughness_texture->bind();
+		glActiveTexture(GL_TEXTURE3);
+		metalic_texture->bind();
 		gun_model->draw();
 
 		display.update();

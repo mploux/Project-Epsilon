@@ -2,16 +2,25 @@
 
 using namespace lz;
 
-std::map<char *, lz::ObjLoader *> lz::Resources::s_objs;
+std::map<char *, lz::ObjLoader *> lz::Resources::m_objs;
+std::map<char *, lz::Texture *> lz::Resources::m_textures;
 
 void Resources::clear()
 {
-	s_objs.clear();
+	m_objs.clear();
+	m_textures.clear();
 }
 
 lz::ObjLoader *Resources::loadObj(char *path)
 {
-	if(!s_objs[path])
-		s_objs[path] = new lz::ObjLoader(path);
-	return s_objs[path];
+	if(!m_objs[path])
+		m_objs[path] = new lz::ObjLoader(path);
+	return m_objs[path];
+}
+
+lz::Texture *Resources::loadTexture(char *path)
+{
+	if(!m_textures[path])
+		m_textures[path] = new lz::Texture(path);
+	return m_textures[path];
 }

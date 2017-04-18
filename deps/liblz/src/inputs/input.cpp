@@ -29,11 +29,13 @@ void Input::updateMouseMovement(Display *display)
 	{
 		m_focused = true;
 		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		glfwGetCursorPos(display->getWindow(), &m_last_x, &m_last_y);
 	}
 	else if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) && m_focused)
 	{
 		m_focused = false;
 		glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		glfwSetCursorPos(display->getWindow(), display->getWidth() / 2.0, display->getHeight() / 2.0);
 	}
 	if (m_focused)
 	{
@@ -43,6 +45,8 @@ void Input::updateMouseMovement(Display *display)
 		m_last_x = m_x;
 		m_last_y = m_y;
 	}
+	else
+		m_dx = m_dy = 0;
 }
 
 bool Input::getKey(int key)
