@@ -14,6 +14,15 @@ int main(int ac, const char **av)
 	lz::Input	input		= lz::Input(display.getWindow());
 	lz::Timer	timer		= lz::Timer();
 	lz::Mesh	*gun_model	= lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
+	const char *env_map_paths[6]	= {
+		"data/cubemaps/church/posx.dds",
+		"data/cubemaps/church/negx.dds",
+		"data/cubemaps/church/posy.dds",
+		"data/cubemaps/church/negy.dds",
+		"data/cubemaps/church/posz.dds",
+		"data/cubemaps/church/negz.dds"
+	};
+	lz::Cubemap env_map		= lz::Cubemap(env_map_paths);
 
 	Material 	mat 		= Material("PBR");
 	Light		light		= Light(vec3(-5, -3, 2), vec3(1, 1, 1), 1.0);
@@ -46,9 +55,13 @@ int main(int ac, const char **av)
 		shader.bind();
 		mat.bind(&shader);
 		light.bind(&shader);
+		glActiveTexture(GL_TEXTURE5);
+		shader.setUniform("env_map", 5);
+		env_map.bind();
 		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform("viewMatrix", camera.getViewMatrix());
 		shader.setUniform("modelMatrix", mat4::rotate(i, i, i));
+		shader.setUniform("cam_pos", camera.getTransform().getPosition());
 
 		gun_model->draw();
 		display.update();

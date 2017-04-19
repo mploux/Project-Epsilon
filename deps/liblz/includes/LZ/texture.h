@@ -26,6 +26,7 @@ namespace lz
 
 	t_generic_image load_bmp(const char *path);
 	t_generic_image load_dds(const char *path);
+	t_generic_image load_image(const char *path);
 
 	class Texture
 	{

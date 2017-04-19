@@ -18,7 +18,9 @@ FILES =		graphics/display.cpp\
 			utils/resources.cpp\
 			graphics/textures/texture.cpp\
 			graphics/textures/texture_dds.cpp\
-			graphics/textures/texture_bmp.cpp
+			graphics/textures/texture_bmp.cpp\
+			graphics/cubemap.cpp\
+			graphics/image.cpp
 
 WHITE = \033[7;49;39m
 BAR_COLOR = \033[48;5;
@@ -36,7 +38,7 @@ OBJS = $(addprefix bin/,$(FILES:.cpp=.o))
 INCLUDES = -I includes/LZ/ -I ../glfw/include/ -I ../glew/include/
 # GLFLAGS = 	-lglfw3 -lGL -lm -lGLU -lglew -lXrandr -lXi -lX11 -lXxf86vm \
 # 			-lpthread -ldl -lXinerama -lXcursor -lrt
-GLFLAGS = 
+GLFLAGS =
 FLAGS = -std=c++11 $(GLFLAGS) $(INCLUDES) -pedantic -W -Wall -Wextra
 
 MKDIR = mkdir -p

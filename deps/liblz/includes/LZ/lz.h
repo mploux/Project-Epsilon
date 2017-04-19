@@ -17,5 +17,6 @@
 # include "string_utils.h"
 # include "transform.h"
 # include "texture.h"
+# include "cubemap.h"
 
 #endif
