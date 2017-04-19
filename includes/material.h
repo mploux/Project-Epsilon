@@ -9,10 +9,10 @@ using namespace maths;
 class Material
 {
 protected:
+	std::map<char *, Texture *texture> *m_textures;
 	Shader	*m_shader;
 	char	*m_name;
 	vec3 	m_color;
-	std::map<char *, Texture *texture> *m_textures;
 	vec3 	m_specularFactor;
 	vec3 	m_specularPower;
 

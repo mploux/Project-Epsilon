@@ -18,6 +18,8 @@ int main(int ac, char **av)
 	lz::Texture *roughness_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_R.dds");
 	lz::Texture *metalic_texture 	= lz::Resources::loadTexture((char *)"data/textures/Cerberus_M.dds");
 
+	Material *mat = new Material("test", &shader);
+
 	double updatedTime	= 0;
 	int frames;
 	double elapsed = 0;
@@ -40,24 +42,27 @@ int main(int ac, char **av)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		camera.perspective(70.0, display.getWidth(), display.getHeight(), 0.1, 1000.0);
 		shader.bind();
-		shader.setUniform((char*)"projectionMatrix", camera.getProjectionMatrix());
-		shader.setUniform((char*)"viewMatrix", camera.getViewMatrix());
-		shader.setUniform((char*)"modelMatrix", mat4::rotate(i, i, i));
-		shader.setUniform((char*)"albedo_texture", 0);
-		shader.setUniform((char*)"normal_texture", 1);
-		shader.setUniform((char*)"roughness_texture", 2);
-		shader.setUniform((char*)"metalic_texture", 3);
+		shader.setUniform((char *)"projectionMatrix", camera.getProjectionMatrix());
+		shader.setUniform((char *)"viewMatrix", camera.getViewMatrix());
+		shader.setUniform((char *)"modelMatrix", mat4::rotate(i, i, i));
 
-		glActiveTexture(GL_TEXTURE0);
-		albedo_texture->bind();
-		glActiveTexture(GL_TEXTURE1);
-		normal_texture->bind();
-		glActiveTexture(GL_TEXTURE2);
-		roughness_texture->bind();
-		glActiveTexture(GL_TEXTURE3);
-		metalic_texture->bind();
+		// shader.setUniform((char *)"albedo_texture", 0);
+		// glActiveTexture(GL_TEXTURE0);
+		// albedo_texture->bind();
+		//
+		// shader.setUniform((char *)"normal_texture", 1);
+		// glActiveTexture(GL_TEXTURE1);
+		// normal_texture->bind();
+		//
+		// shader.setUniform((char *)"roughness_texture", 2);
+		// glActiveTexture(GL_TEXTURE2);
+		// roughness_texture->bind();
+		//
+		// shader.setUniform((char *)"metalic_texture", 3);
+		// glActiveTexture(GL_TEXTURE3);
+		// metalic_texture->bind();
+
 		gun_model->draw();
-
 		display.update();
 		if (display.wasResized())
 			glViewport(0, 0, display.getWidth(), display.getHeight());
