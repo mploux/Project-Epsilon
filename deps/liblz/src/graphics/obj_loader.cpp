@@ -9,7 +9,7 @@
 
 using namespace lz;
 
-ObjLoader::ObjLoader(char *path)
+ObjLoader::ObjLoader(const char *path)
 {
 	char line[256];
 	FILE *fp;

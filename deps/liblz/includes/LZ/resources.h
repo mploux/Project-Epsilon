@@ -10,13 +10,13 @@ namespace lz
 	class Resources
 	{
 	private:
-		static std::map<char *, lz::ObjLoader *> m_objs;
-		static std::map<char *, lz::Texture *> m_textures;
+		static std::map<const char *, lz::ObjLoader *> m_objs;
+		static std::map<const char *, lz::Texture *> m_textures;
 
 	public:
 		static void clear();
-		static lz::ObjLoader *loadObj(char *path);
-		static lz::Texture *loadTexture(char *path);
+		static lz::ObjLoader *loadObj(const char *path);
+		static lz::Texture *loadTexture(const char *path);
 	};
 }
 

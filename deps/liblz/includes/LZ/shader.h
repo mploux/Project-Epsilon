@@ -16,17 +16,17 @@ namespace lz
 		GLuint	createProgram(const char *vertex_source, const char *fragment_source);
 		GLuint	createShader(const char *source, int shader);
 
-		GLuint 	getUniformLocation(char *name);
+		GLuint 	getUniformLocation(const char *name);
 
 	public:
 		Shader(const char *vertex_path, const char *fragment_path);
 		~Shader();
 
-		void 	setUniform(char *name, GLint v);
-		void 	setUniform(char *name, GLfloat v);
-		void 	setUniform(char *name, vec3 v);
-		void 	setUniform(char *name, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
-		void 	setUniform(char *name, mat4 v);
+		void 	setUniform(const char *name, GLint v);
+		void 	setUniform(const char *name, GLfloat v);
+		void 	setUniform(const char *name, vec3 v);
+		void 	setUniform(const char *name, GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+		void 	setUniform(const char *name, mat4 v);
 
 		inline void bind() { glUseProgram(m_program); };
 		inline void unbind() { glUseProgram(0); };

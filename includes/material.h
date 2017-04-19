@@ -9,30 +9,29 @@ using namespace maths;
 class Material
 {
 protected:
-	std::map<char *, Texture *texture> *m_textures;
-	Shader	*m_shader;
-	char	*m_name;
-	vec3 	m_color;
-	vec3 	m_specularFactor;
-	vec3 	m_specularPower;
+	std::map<const char *, Texture *> m_textures;
+	const char	*m_name;
+	vec3 		m_color;
+	float 		m_specularFactor;
+	float 		m_specularPower;
 
 public:
-	Material(char *name, Shader *shader);
+	Material(const char *name);
 	~Material();
 
-	void bind();
-	void addTexture(char *name, Texture *texture);
-	void removeTexture(char *name);
+	void bind(Shader *shader);
+	void addTexture(const char *name, Texture *texture);
+	void removeTexture(const char *name);
 
 	inline void setColor(vec3 color) { m_color = color; }
 	inline void setSpeculatFactor(float sf) { m_specularFactor = sf; }
 	inline void setSpecularPower(float sp) { m_specularPower = sp; }
 
-	inline std::map<char *, Texture *texture> getTextures() { return m_texture; }
-	inline char *getName() { return m_name; }
-	inline char getColor() { return m_color; }
-	inline char getSpeculatFactor() { return m_specularFactor; }
-	inline char getSpecularPower() { return m_specularPower; }
+	inline std::map<const char *, Texture *> getTextures() { return m_textures; }
+	inline const char *getName() { return m_name; }
+	inline vec3 getColor() { return m_color; }
+	inline float getSpeculatFactor() { return m_specularFactor; }
+	inline float getSpecularPower() { return m_specularPower; }
 };
 
 #endif

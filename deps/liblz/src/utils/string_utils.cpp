@@ -70,7 +70,7 @@ char		*str_concat(char *str1, char *str2)
 	return (result);
 }
 
-static char		*getword(const char *s, char c, int i)
+static char		*getword(char *s, char c, int i)
 {
 	int		j;
 	char	*result;
@@ -91,7 +91,7 @@ static char		*getword(const char *s, char c, int i)
 	return (result);
 }
 
-static char		**malloc_words(const char *s, char c)
+static char		**malloc_words(char *s, char c)
 {
 	int		i;
 	int		num;

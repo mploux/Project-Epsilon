@@ -44,32 +44,32 @@ GLuint Shader::createProgram(const char *vertex_source, const char *fragment_sou
 	return (program);
 }
 
-GLuint Shader::getUniformLocation(char *name)
+GLuint Shader::getUniformLocation(const char *name)
 {
 	return glGetUniformLocation(m_program, (GLchar*)name);
 }
 
-void Shader::setUniform(char* name, GLint v)
+void Shader::setUniform(const char *name, GLint v)
 {
 	glUniform1i(getUniformLocation(name), v);
 }
 
-void Shader::setUniform(char *name, GLfloat v)
+void Shader::setUniform(const char *name, GLfloat v)
 {
 	glUniform1f(getUniformLocation(name), v);
 }
 
-void Shader::setUniform(char* name, vec3 v)
+void Shader::setUniform(const char *name, vec3 v)
 {
 	glUniform3f(getUniformLocation(name), v.x, v.y, v.z);
 }
 
-void Shader::setUniform(char* name, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+void Shader::setUniform(const char *name, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 {
 	glUniform4f(getUniformLocation(name), x, y, z, w);
 }
 
-void Shader::setUniform(char* name, mat4 m)
+void Shader::setUniform(const char *name, mat4 m)
 {
 	glUniformMatrix4fv(getUniformLocation(name), 1, false, m.m_matrix);
 }

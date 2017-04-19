@@ -36,7 +36,7 @@ namespace lz
 		Mesh *m_mesh;
 
 	public:
-		ObjLoader(char *path);
+		ObjLoader(const char *path);
 		~ObjLoader();
 
 		inline Mesh *getMesh() { return (m_mesh); }
