@@ -8,6 +8,7 @@
 #include "string_utils.h"
 
 using namespace lz;
+using namespace maths;
 
 ObjLoader::ObjLoader(const char *path)
 {
@@ -98,6 +99,10 @@ ObjLoader::ObjLoader(const char *path)
 	m_texCoords.buffer = (GLfloat *)malloc(m_texCoords.size);
 	if (m_texCoords.buffer == NULL)
 		printf("OBJ TEX COORDS MALLOC PROBLEM !");
+	m_tangents.size = sizeof(GLfloat) * m_indicesSize * 3;
+	m_tangents.buffer = (GLfloat *)malloc(m_tangents.size);
+	if (m_tangents.buffer == NULL)
+		printf("OBJ TANGENTS MALLOC PROBLEM !");
 	m_indices.size = sizeof(GLuint) * m_indicesSize;
 	m_indices.buffer = (GLuint *)malloc(m_indices.size);
 	if (m_indices.buffer == NULL)
@@ -117,16 +122,88 @@ ObjLoader::ObjLoader(const char *path)
 		m_texCoords.buffer[i * 2 + 0] = m_loadedTexCoords[index.texcoord * 2 + 0];
 		m_texCoords.buffer[i * 2 + 1] = m_loadedTexCoords[index.texcoord * 2 + 1];
 
+		if (i + 2 < m_indicesSize)
+			ObjLoader::calcTangent(
+				i,
+				m_loadedIndices[i],
+				m_loadedIndices[i + 1],
+				m_loadedIndices[i + 2]
+			);
+
 		m_indices.buffer[i] = i;
 	}
 	m_mesh = new Mesh(m_indicesSize);
 	m_mesh->setPositions(m_positions);
 	m_mesh->setNormals(m_normals);
 	m_mesh->setTexCoords(m_texCoords);
+	m_mesh->setTangents(m_tangents);
 	m_mesh->setIndices(m_indices);
 	m_mesh->create();
-	printf("LOL\n");
 }
+
+void ObjLoader::calcTangent(int index, VertexIndex i0, VertexIndex i1, VertexIndex i2)
+{
+	vec3 edge1 = vec3(
+		m_loadedPositions[i1.position * 3 + 0] - m_loadedPositions[i0.position * 3 + 0],
+		m_loadedPositions[i1.position * 3 + 1] - m_loadedPositions[i0.position * 3 + 1],
+		m_loadedPositions[i1.position * 3 + 2] - m_loadedPositions[i0.position * 3 + 2]
+	);
+	vec3 edge2 = vec3(
+		m_loadedPositions[i2.position * 3 + 0] - m_loadedPositions[i0.position * 3 + 0],
+		m_loadedPositions[i2.position * 3 + 1] - m_loadedPositions[i0.position * 3 + 1],
+		m_loadedPositions[i2.position * 3 + 2] - m_loadedPositions[i0.position * 3 + 2]
+	);
+	float deltaU1 = m_loadedTexCoords[i1.texcoord * 2 + 0] - m_loadedTexCoords[i0.texcoord * 2 + 0];
+	float deltaV1 = m_loadedTexCoords[i1.texcoord * 2 + 1] - m_loadedTexCoords[i0.texcoord * 2 + 1];
+	float deltaU2 = m_loadedTexCoords[i2.texcoord * 2 + 0] - m_loadedTexCoords[i0.texcoord * 2 + 0];
+	float deltaV2 = m_loadedTexCoords[i2.texcoord * 2 + 1] - m_loadedTexCoords[i0.texcoord * 2 + 1];
+
+	float dividend = (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+	float f = dividend == 0 ? 0.0f : 1.0f / dividend;
+	vec3 tangent = vec3(
+		(deltaV2 * edge1.x - deltaV1 * edge2.x),
+		(deltaV2 * edge1.y - deltaV1 * edge2.y),
+		(deltaV2 * edge1.z - deltaV1 * edge2.z)
+	);
+	tangent.normalize();
+	m_tangents.buffer[index * 3 + 0] = tangent.x;
+	m_tangents.buffer[index * 3 + 1] = tangent.y;
+	m_tangents.buffer[index * 3 + 2] = tangent.z;
+}
+
+// public void calcTangents() {
+// 	for (int i = 0; i < m_indicesSize; i++)
+// 	{
+// 		int index = i * 3;
+// 		int i0 = indices.buffer[index];
+// 		int i1 = indices.buffer[index + 1];
+// 		int i2 = indices.buffer[index + 2];
+//
+// 		vec3 edge1 = vec3(positions.buffer[i1] - positions.buffer[i0]));
+//
+// 		Vector3f edge2 = positions.buffer[i2].sub(positions.buffer[i0]);
+//
+// 		float deltaU1 = texCoords[i1].x - texCoords[i0].x;
+// 		float deltaV1 = texCoords[i1].y - texCoords[i0].y;
+// 		float deltaU2 = texCoords[i2].x - texCoords[i0].x;
+// 		float deltaV2 = texCoords[i2].y - texCoords[i0].y;
+//
+// 		float dividend = (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+// 		float f = dividend == 0 ? 0.0f : 1.0f / dividend;
+//
+// 		Vector3f tangent = new Vector3f(0, 0, 0);
+// 		tangent.x = f * (deltaV2 * edge1.x - deltaV1 * edge2.x);
+// 		tangent.y = f * (deltaV2 * edge1.y - deltaV1 * edge2.y);
+// 		tangent.z = f * (deltaV2 * edge1.z - deltaV1 * edge2.z);
+//
+// 		tangentsList.get(i0).set(tangentsList.get(i0).add(tangent));
+// 		tangentsList.get(i1).set(tangentsList.get(i1).add(tangent));
+// 		tangentsList.get(i2).set(tangentsList.get(i2).add(tangent));
+// 	}
+//
+// 	for (int i = 0; i < tangentsList.size(); i++)
+// 		tangentsList.get(i).set(tangentsList.get(i).normalize());
+// }
 
 ObjLoader::~ObjLoader()
 {

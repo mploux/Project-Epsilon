@@ -15,7 +15,7 @@ namespace lz
 	class Mesh
 	{
 	private:
-		GLuint  m_vao, m_vbo, m_nbo, m_tbo, m_ibo;
+		GLuint  m_vao, m_vbo, m_nbo, m_tbo, m_ibo, m_tnbo;
 
 		GLfloatBuffer 	m_positions;
 		GLfloatBuffer 	m_texCoords;

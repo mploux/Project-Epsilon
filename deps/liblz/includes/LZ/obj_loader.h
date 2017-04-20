@@ -31,9 +31,12 @@ namespace lz
 		GLfloatBuffer m_positions;
 		GLfloatBuffer m_normals;
 		GLfloatBuffer m_texCoords;
+		GLfloatBuffer m_tangents;
 		GLuintBuffer m_indices;
 
 		Mesh *m_mesh;
+
+		void calcTangent(int index, VertexIndex i0, VertexIndex i1, VertexIndex i2);
 
 	public:
 		ObjLoader(const char *path);

@@ -8,12 +8,6 @@ int main(int ac, const char **av)
 {
 	(void) ac;
 	(void) av;
-	lz::Display display		= lz::Display("Planet !", 1280, 720);
-	lz::Shader 	shader		= lz::Shader("data/shaders/main_v.glsl", "data/shaders/main_f.glsl");
-	lz::Camera	camera		= lz::Camera(vec3(0, 0, 0));
-	lz::Input	input		= lz::Input(display.getWindow());
-	lz::Timer	timer		= lz::Timer();
-	lz::Mesh	*gun_model	= lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
 	const char *env_map_paths[6]	= {
 		"data/cubemaps/church/posx.dds",
 		"data/cubemaps/church/negx.dds",
@@ -22,18 +16,26 @@ int main(int ac, const char **av)
 		"data/cubemaps/church/posz.dds",
 		"data/cubemaps/church/negz.dds"
 	};
+	lz::Display display		= lz::Display("Planet !", 1280, 720);
+	lz::Shader 	shader		= lz::Shader("data/shaders/main_v.glsl", "data/shaders/main_f.glsl");
+	lz::Camera	camera		= lz::Camera(vec3(0, 0, 0));
+	lz::Input	input		= lz::Input(display.getWindow());
+	lz::Timer	timer		= lz::Timer();
+	lz::Mesh	*gun_model	= lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
+	lz::Mesh	*sphere		= lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
+	lz::Mesh	*plane		= lz::Resources::loadObj("data/models/Plane.obj")->getMesh();
 	lz::Cubemap env_map		= lz::Cubemap(env_map_paths);
 
+	Light		light		= Light(vec3(-5, 3, 2), vec3(1, 1, 1), 1.0);
 	Material 	mat 		= Material("PBR");
-	Light		light		= Light(vec3(-5, -3, 2), vec3(1, 1, 1), 1.0);
-
 	mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Cerberus_A.dds"));
 	mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Cerberus_N.dds"));
 	mat.addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Cerberus_R.dds"));
 	mat.addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Cerberus_M.dds"));
 
+
 	double updatedTime	= 0;
-	int frames;
+	int frames = 0;
 	double elapsed = 0;
 	double delta = 0;
 	// double fps = 0;
@@ -58,17 +60,23 @@ int main(int ac, const char **av)
 		glActiveTexture(GL_TEXTURE5);
 		shader.setUniform("env_map", 5);
 		env_map.bind();
+		shader.setUniform("cam_pos", camera.getTransform().getPosition());
 		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform("viewMatrix", camera.getViewMatrix());
-		shader.setUniform("modelMatrix", mat4::rotate(i, i, i));
-		shader.setUniform("cam_pos", camera.getTransform().getPosition());
 
+		shader.setUniform("modelMatrix", mat4::scale(0.2, 0.2, 0.2).mul(mat4::translate(-3, 2, 0)));
+		sphere->draw();
+
+		shader.setUniform("modelMatrix", mat4::scale(1, 1, 1).mul(mat4::translate(0, 0.5, 0)));
 		gun_model->draw();
+
+		shader.setUniform("modelMatrix", mat4::scale(0.2, 0.2, 0.2).mul(mat4::translate(0, 0, 0)));
+		plane->draw();
+
 		display.update();
 		if (display.wasResized())
 			glViewport(0, 0, display.getWidth(), display.getHeight());
 		frames++;
-
 	}
 	delete gun_model;
 	return (0);

@@ -58,7 +58,7 @@ $(BIN):
 	@$(MKDIR) $(DIRS)
 
 bin/%.o: src/%.cpp $(COUNT) $(WIDTH)
-	$(CC) -c $^ -o $@ $(FLAGS)
+	$(CC) -MMD -c $^ -o $@ $(FLAGS)
 
 clean:
 	@$(RMDIR) bin

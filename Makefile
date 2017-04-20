@@ -39,7 +39,7 @@ RM = rm -rf
 
 $(NAME): deps $(DIRS) $(OBJS)
 	@printf "Making liblz..."
-	@make --no-print-directory -C deps/liblz/ > /dev/null
+	@make re --no-print-directory -C deps/liblz/
 	@printf "\r$(GREEN)Compiling liblz: DONE !$(NO_COLOR)\n";
 	@printf "Making libGLFW..."
 	@make -C deps/glfw/build/ > /dev/null
@@ -60,7 +60,7 @@ $(DIRS):
 	@$(MKDIR) $(DIRS)
 
 bin/%.o: srcs/%.cpp
-	@$(CC) -c $^ -o $@ $(CXXFLAGS) $(INCLUDES)
+	$(CC) -c $^ -o $@ $(CXXFLAGS) $(INCLUDES)
 
 clean:
 	@printf "Cleaning objs..."
