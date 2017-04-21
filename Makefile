@@ -39,7 +39,7 @@ RM = rm -rf
 
 $(NAME): deps $(DIRS) $(OBJS)
 	@printf "Making liblz..."
-	@make re --no-print-directory -C deps/liblz/
+	@make --no-print-directory -C deps/liblz/
 	@printf "\r$(GREEN)Compiling liblz: DONE !$(NO_COLOR)\n";
 	@printf "Making libGLFW..."
 	@make -C deps/glfw/build/ > /dev/null
