@@ -15,6 +15,7 @@ uniform sampler2D normal_texture;
 uniform sampler2D roughness_texture;
 uniform sampler2D metalic_texture;
 uniform samplerCube env_map;
+uniform samplerCube irradiance_map;
 uniform vec3 cam_pos;
 
 uniform Light light;
@@ -60,13 +61,13 @@ vec3 fresnel_schlick(float cosTheta, vec3 F0)
 
 void main(void)
 {
-	float roughness = texture(roughness_texture, v_texcoord).r;
+	float roughness = pow(texture(roughness_texture, v_texcoord).r, 2.0);
 	float metalic = texture(metalic_texture, v_texcoord).r;
 	vec3 albedo = texture(albedo_texture, v_texcoord).rgb;
 
 	if (use_textures == 0)
 	{
-		roughness = roughness_factor;
+		roughness = pow(roughness_factor, 2.0);
 		metalic = metalic_factor;
 		albedo = albedo_color;
 	}
@@ -92,7 +93,9 @@ void main(void)
 
 	float NdotL = max(dot(normal, light), 0.0);
 
-	vec3 color = (kD * albedo / PI + brdf) * vec3(1, 1, 1) * NdotL;
+	vec3 irradiance = texture(irradiance_map, -normal).rgb;
+	vec3 ambient = irradiance * albedo;
+	vec3 color = ambient + (kD * albedo / PI + brdf) * vec3(1, 1, 1) * NdotL;
 
 	color = color / (color + vec3(1.0));
     color = pow(color, vec3(1.0/2.2));

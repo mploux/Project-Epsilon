@@ -28,6 +28,7 @@ int main(int ac, const char **av)
 	lz::Mesh	*plane		= lz::Resources::loadObj("data/models/Plane.obj")->getMesh();
 	lz::Mesh	*skybox		= lz::Resources::loadObj("data/models/Cube.obj")->getMesh();
 	lz::Cubemap env_map		= lz::Cubemap(env_map_paths);
+	lz::Texture *env_tex	= lz::Resources::loadTexture("data/environments/Outside.dds");
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
@@ -64,37 +65,50 @@ int main(int ac, const char **av)
 		glClearColor(0.2, 0.2, 0.2, 1.0);
 		camera.perspective(70.0, display.getWidth(), display.getHeight(), 0.1, 1000.0);
 
-		// sky_shader.bind();
+		sky_shader.bind();
+		glActiveTexture(GL_TEXTURE0);
+		sky_shader.setUniform("env_map", 0);
 		// env_map.bind();
-		// sky_shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		// sky_shader.setUniform("viewMatrix", mat4::cameraView(camera.getTransform().getForward(), camera.getTransform().getUp()));
+		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getIrradianceID());
+		sky_shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
+		// sky_shader.setUniform("viewMatrix", camera.getViewMatrix());
 		// sky_shader.setUniform("modelMatrix", mat4::identity());
-		// glDepthMask(GL_FALSE);
-		// glCullFace(GL_BACK);
-		// skybox->draw();
-		// glCullFace(GL_FRONT);
-		// glDepthMask(GL_TRUE);
+
+		sky_shader.setUniform("viewMatrix", mat4::cameraView(camera.getTransform().getForward(), camera.getTransform().getUp()));
+		sky_shader.setUniform("modelMatrix", mat4::identity());
+		glDepthMask(GL_FALSE);
+		glCullFace(GL_BACK);
+		skybox->draw();
+		glCullFace(GL_FRONT);
+		glDepthMask(GL_TRUE);
+		env_map.unbind();
 
 		shader.bind();
 		mat.bind(&shader);
 		light.bind(&shader);
+
 		glActiveTexture(GL_TEXTURE5);
 		shader.setUniform("env_map", 5);
 		env_map.bind();
+
+		glActiveTexture(GL_TEXTURE6);
+		shader.setUniform("irradiance_map", 6);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getIrradianceID());
+
 		shader.setUniform("use_textures", 1);
 		shader.setUniform("cam_pos", camera.getTransform().getPosition());
 		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform("viewMatrix", camera.getViewMatrix());
 
 		shader.setUniform("use_textures", 0);
-		shader.setUniform("albedo_color", vec3(1.00, 0.71, 0.29));
+		shader.setUniform("albedo_color", vec3(1, 0, 0));
 		for (int x = 0; x < 6; x++)
 		{
 			for (int y = 0; y < 6; y++)
 			{
 				shader.setUniform("modelMatrix", mat4::translate(x * 1.2 - 3, y * 1.2, -3).mul(mat4::scale(0.5, 0.5, 0.5)));
-				shader.setUniform("roughness_factor", (GLfloat)((GLfloat)x / 6.0 + 0.1));
-				shader.setUniform("metalic_factor", (GLfloat)((GLfloat)y / 6.0 + 0.1));
+				shader.setUniform("roughness_factor", (GLfloat)((GLfloat)x / 6.0 + 0.05));
+				shader.setUniform("metalic_factor", (GLfloat)((GLfloat)y / 6.0));
 				sphere->draw();
 			}
 		}
@@ -105,7 +119,7 @@ int main(int ac, const char **av)
 		toilet->draw();
 
 		gun_mat.bind(&shader);
-		shader.setUniform("modelMatrix", mat4::translate(0, 3, 0).mul(mat4::rotate(0, 90, 0).mul(mat4::scale(2, 2, 2))));
+		shader.setUniform("modelMatrix", mat4::translate(0, 3, 0).mul(mat4::rotate(0, 90, 0).mul(mat4::scale(4, 4, 4))));
 		gun_model->draw();
 
 		display.update();

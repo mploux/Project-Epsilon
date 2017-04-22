@@ -32,6 +32,7 @@ namespace lz
 		unsigned int 	dataPos;
 		FILE 			*file;
 
+		printf("loading:%s\n", path);
 		file = get_bmp_file(path);
 		set_bmp_header(file, header);
 		dataPos = *(int*)&(header[0x0A]);

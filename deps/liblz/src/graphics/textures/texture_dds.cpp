@@ -42,6 +42,7 @@ namespace lz
 		unsigned char header[124];
 		FILE *fp;
 
+		printf("loading:%s\n", path);
 		fp = load_dds_file(path);
 		fread(&header, 124, 1, fp);
 		result.height = *(unsigned int*)&(header[8 ]);
