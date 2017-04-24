@@ -6,18 +6,11 @@ using namespace lz::maths;
 
 int main(int ac, const char **av)
 {
-	(void) ac;
-	(void) av;
-	const char *env_map_paths[6]	= {
-		"data/cubemaps/church/posx.dds",
-		"data/cubemaps/church/negx.dds",
-		"data/cubemaps/church/posy.dds",
-		"data/cubemaps/church/negy.dds",
-		"data/cubemaps/church/posz.dds",
-		"data/cubemaps/church/negz.dds"
-	};
+	if (ac != 2)
+		sever("Usage: renderer env_map");
 	lz::Display display		= lz::Display("Planet !", 1280, 720);
 	lz::Shader 	shader		= lz::Shader("data/shaders/main_v.glsl", "data/shaders/main_f.glsl");
+	lz::Shader 	debug		= lz::Shader("data/shaders/debug_v.glsl", "data/shaders/debug_g.glsl", "data/shaders/debug_f.glsl");
 	lz::Shader 	sky_shader	= lz::Shader("data/shaders/skybox_v.glsl", "data/shaders/skybox_f.glsl");
 	lz::Camera	camera		= lz::Camera(vec3(0, 0, 0));
 	lz::Input	input		= lz::Input(display.getWindow());
@@ -27,18 +20,19 @@ int main(int ac, const char **av)
 	lz::Mesh	*sphere		= lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
 	lz::Mesh	*plane		= lz::Resources::loadObj("data/models/Plane.obj")->getMesh();
 	lz::Mesh	*skybox		= lz::Resources::loadObj("data/models/Cube.obj")->getMesh();
-	lz::Cubemap env_map		= lz::Cubemap("data/environments/Outside.dds");
-	lz::Texture *env_tex	= lz::Resources::loadTexture("data/environments/Outside.dds");
+	lz::Mesh	*terrain	= lz::Resources::loadObj("data/models/Terrain.obj")->getMesh();
+	lz::Cubemap env_map		= lz::Cubemap(av[1], 512);
+	lz::Texture *bref_lut	= lz::Resources::loadTexture("data/environments/BRDF_LUT.dds");
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT);
 
 	Light		light		= Light(vec3(-5, 3, 2), vec3(1, 1, 1), 1.0);
 	Material 	mat 		= Material("PBR");
-	mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Iron_A.dds"));
-	mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Iron_N.dds"));
-	mat.addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Iron_R.dds"));
-	mat.addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Iron_M.dds"));
+	mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Grass_A.dds"));
+	mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Grass_N.dds"));
+	mat.addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Grass_R.dds"));
+	mat.addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Grass_M.dds"));
 	Material 	gun_mat		= Material("PBR_gun");
 	gun_mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Cerberus_A.dds"));
 	gun_mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Cerberus_N.dds"));
@@ -68,7 +62,7 @@ int main(int ac, const char **av)
 		sky_shader.bind();
 		glActiveTexture(GL_TEXTURE0);
 		sky_shader.setUniform("env_map", 0);
-		env_tex->bind();
+		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getID());
 		sky_shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
 		sky_shader.setUniform("viewMatrix", mat4::cameraView(camera.getTransform().getForward(), camera.getTransform().getUp()));
 		sky_shader.setUniform("modelMatrix", mat4::identity());
@@ -85,25 +79,29 @@ int main(int ac, const char **av)
 
 		glActiveTexture(GL_TEXTURE5);
 		shader.setUniform("env_map", 5);
-		env_map.bind();
+		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getID());
 
 		glActiveTexture(GL_TEXTURE6);
 		shader.setUniform("irradiance_map", 6);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getIrradianceID());
+
+		glActiveTexture(GL_TEXTURE7);
+		shader.setUniform("brdf_lut", 7);
+		bref_lut->bind();
 
 		shader.setUniform("use_textures", 1);
 		shader.setUniform("cam_pos", camera.getTransform().getPosition());
 		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
 		shader.setUniform("viewMatrix", camera.getViewMatrix());
 
-		shader.setUniform("use_textures", 0);
-		shader.setUniform("albedo_color", vec3(1, 0, 0));
+		shader.setUniform("use_textures", 1);
+		shader.setUniform("albedo_color", vec3(1.00, 0.71, 0.29));
 		for (int x = 0; x < 6; x++)
 		{
 			for (int y = 0; y < 6; y++)
 			{
 				shader.setUniform("modelMatrix", mat4::translate(x * 1.2 - 3, y * 1.2, -3).mul(mat4::scale(0.5, 0.5, 0.5)));
-				shader.setUniform("roughness_factor", (GLfloat)((GLfloat)x / 6.0 + 0.05));
+				shader.setUniform("roughness_factor", (GLfloat)((GLfloat)x / 6.0 + 0.02));
 				shader.setUniform("metalic_factor", (GLfloat)((GLfloat)y / 6.0));
 				sphere->draw();
 			}
@@ -112,11 +110,21 @@ int main(int ac, const char **av)
 
 		shader.setUniform("roughness_factor", (GLfloat)0.8);
 		shader.setUniform("modelMatrix", mat4::translate(0, 0, 2));
-		toilet->draw();
+		sphere->draw();
 
 		gun_mat.bind(&shader);
 		shader.setUniform("modelMatrix", mat4::translate(0, 3, 0).mul(mat4::rotate(0, 90, 0).mul(mat4::scale(4, 4, 4))));
 		gun_model->draw();
+
+		mat.bind(&shader);
+		shader.setUniform("modelMatrix", mat4::translate(0, -1, 0));
+		terrain->draw();
+
+		debug.bind();
+		debug.setUniform("projectionMatrix", camera.getProjectionMatrix());
+		debug.setUniform("viewMatrix", camera.getViewMatrix());
+		debug.setUniform("modelMatrix", mat4::translate(0, 0, 2));
+		sphere->draw();
 
 		display.update();
 		if (display.wasResized())

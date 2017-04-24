@@ -33,14 +33,14 @@ void vec3::set(float x, float y, float z)
 
 float vec3::magnitude()
 {
-	return (SQRT(x * x + y * y + z * z));
+	return (SQRT(this->x * this->x + this->y * this->y + this->z * this->z));
 }
 
 vec3 vec3::normalize()
 {
 	vec3 result;
 	float m = magnitude();
-	result.set(x / m, y / m, z / m);
+	result.set(this->x / m, this->y / m, this->z / m);
 
 	return (result);
 }

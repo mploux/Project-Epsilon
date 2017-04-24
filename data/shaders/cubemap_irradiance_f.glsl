@@ -3,7 +3,6 @@
 
 out vec4 out_color;
 
-// uniform samplerCube env_map;
 uniform sampler2D env_map;
 
 in vec3 v_position;

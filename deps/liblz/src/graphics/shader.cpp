@@ -11,7 +11,15 @@ Shader::Shader(const char *vertex_path, const char *fragment_path)
 {
 	const char *vertex_source = load_file(vertex_path);
 	const char *fragment_source = load_file(fragment_path);
-	m_program = Shader::createProgram(vertex_source, fragment_source);
+	m_program = Shader::createProgram(vertex_source, NULL, fragment_source);
+}
+
+Shader::Shader(const char *vertex_path, const char *geometry_path, const char *fragment_path)
+{
+	const char *vertex_source = load_file(vertex_path);
+	const char *geometry_source = load_file(geometry_path);
+	const char *fragment_source = load_file(fragment_path);
+	m_program = Shader::createProgram(vertex_source, geometry_source, fragment_source);
 }
 
 Shader::~Shader()
@@ -19,27 +27,31 @@ Shader::~Shader()
 	glDeleteProgram(m_program);
 }
 
-GLuint Shader::createProgram(const char *vertex_source, const char *fragment_source)
+GLuint Shader::createProgram(const char *vertex_source, const char *geometry_source, const char *fragment_source)
 {
 	GLuint program = glCreateProgram();
 
 	if (program == GL_FALSE)
 		sever("Unable to create shader program !");
 
-	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
-	GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
-
 	GLuint vertex_shader = Shader::createShader(vertex_source, GL_VERTEX_SHADER);
-	GLuint fragment_shader = Shader::createShader(fragment_source, GL_FRAGMENT_SHADER);
-
 	glAttachShader(program, vertex_shader);
+	GLuint geometry_shader = NULL;
+	if (geometry_source)
+	{
+		geometry_shader = Shader::createShader(geometry_source, GL_GEOMETRY_SHADER);
+		glAttachShader(program, geometry_shader);
+	}
+	GLuint fragment_shader = Shader::createShader(fragment_source, GL_FRAGMENT_SHADER);
 	glAttachShader(program, fragment_shader);
 
 	glLinkProgram(program);
 	glValidateProgram(program);
 
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
+	glDeleteShader(vertex_shader);
+	if (geometry_source)
+		glDeleteShader(geometry_shader);
+	glDeleteShader(fragment_shader);
 
 	return (program);
 }

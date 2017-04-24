@@ -15,8 +15,8 @@ Mesh::~Mesh()
 	glDeleteVertexArrays(1, &m_vao);
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteBuffers(1, &m_nbo);
-	glDeleteBuffers(1, &m_ibo);
 	glDeleteBuffers(1, &m_tnbo);
+	glDeleteBuffers(1, &m_ibo);
 }
 
 void Mesh::create()
@@ -25,8 +25,8 @@ void Mesh::create()
 	glGenBuffers(1, &m_vbo);
 	glGenBuffers(1, &m_nbo);
 	glGenBuffers(1, &m_tbo);
-	glGenBuffers(1, &m_ibo);
 	glGenBuffers(1, &m_tnbo);
+	glGenBuffers(1, &m_ibo);
 
 	glBindVertexArray(m_vao);
 

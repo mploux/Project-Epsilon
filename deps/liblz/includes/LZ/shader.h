@@ -14,12 +14,14 @@ namespace lz
 		GLuint	m_program;
 
 		GLuint	createProgram(const char *vertex_source, const char *fragment_source);
+		GLuint	createProgram(const char *vertex_source, const char *geometrie_source, const char *fragment_source);
 		GLuint	createShader(const char *source, int shader);
 
 		GLuint 	getUniformLocation(const char *name);
 
 	public:
 		Shader(const char *vertex_path, const char *fragment_path);
+		Shader(const char *vertex_path, const char *geometrie_path, const char *fragment_path);
 		~Shader();
 
 		void 	setUniform(const char *name, GLint v);
