@@ -93,7 +93,7 @@ void main(void)
 
 	float NdotL = max(dot(normal, light), 0.0);
 
-	vec3 irradiance = texture(irradiance_map, -normal).rgb;
+	vec3 irradiance = texture(irradiance_map, normal).rgb;
 	vec3 ambient = irradiance * albedo;
 	vec3 color = ambient + (kD * albedo / PI + brdf) * vec3(1, 1, 1) * NdotL;
 

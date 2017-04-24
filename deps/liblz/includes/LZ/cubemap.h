@@ -12,18 +12,25 @@
 
 namespace lz
 {
+	typedef enum 	s_map_type
+	{
+		CUBEMAP, EQUIRECTANGULAR
+	}				t_map_type;
+
 	class Cubemap
 	{
 	private:
+		lz::Texture		m_env_map;
 		GLuint			m_id;
 		GLuint			m_irradiance_id;
 		t_generic_image m_faces[6];
 
-		void generateIrradiance();
+		void generateIrradiance(t_map_type type);
 		void generateMipmaps();
 
 	public:
 		Cubemap(const char *cubemap_paths[6]);
+		Cubemap(const char *path);
 		~Cubemap();
 
 		void bind();

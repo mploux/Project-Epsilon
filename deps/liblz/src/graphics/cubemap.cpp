@@ -22,10 +22,28 @@ namespace lz
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		Cubemap::generateIrradiance();
+		Cubemap::generateIrradiance(CUBEMAP);
 	}
 
-	void Cubemap::generateIrradiance()
+	Cubemap::Cubemap(const char *path)
+	{
+		glGenTextures(1, &m_id);
+		glBindTexture(GL_TEXTURE_2D, m_id);
+		t_generic_image map = load_image(path);
+		unsigned int blockSize = (map.format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+		unsigned int size = ((map.width+3)/4)*((map.height+3)/4)*blockSize;
+		glCompressedTexImage2D(GL_TEXTURE_2D, 0, map.format,
+				map.width, map.height, 0, size, map.data);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+		m_env_map = lz::Resources::loadTexture(path);
+		Cubemap::generateIrradiance(EQUIRECTANGULAR);
+	}
+
+	void Cubemap::generateIrradiance(t_map_type type)
 	{
 		GLuint fbo, rbo;
 		Shader shader = lz::Shader("data/shaders/cubemap_irradiance_v.glsl", "data/shaders/cubemap_irradiance_f.glsl");
@@ -56,7 +74,10 @@ namespace lz
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		shader.bind();
 		glActiveTexture(GL_TEXTURE0);
-		Cubemap::bind();
+		if (type == EQUIRECTANGULAR)
+			m_env_map.bind();
+		else
+			Cubemap::bind();
 		shader.setUniform("projectionMatrix", mat4::perspective(90.0, 1.0, 0.1, 2.0));
 		shader.setUniform("env_map", 0);
 		glViewport(0, 0, 512, 512);
@@ -70,6 +91,7 @@ namespace lz
 			cube->draw();
 		}
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		delete cube;
 	}
 
 	Cubemap::~Cubemap()

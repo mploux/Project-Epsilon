@@ -27,7 +27,7 @@ int main(int ac, const char **av)
 	lz::Mesh	*sphere		= lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
 	lz::Mesh	*plane		= lz::Resources::loadObj("data/models/Plane.obj")->getMesh();
 	lz::Mesh	*skybox		= lz::Resources::loadObj("data/models/Cube.obj")->getMesh();
-	lz::Cubemap env_map		= lz::Cubemap(env_map_paths);
+	lz::Cubemap env_map		= lz::Cubemap("data/environments/Outside.dds");
 	lz::Texture *env_tex	= lz::Resources::loadTexture("data/environments/Outside.dds");
 
 	glEnable(GL_CULL_FACE);
@@ -68,12 +68,8 @@ int main(int ac, const char **av)
 		sky_shader.bind();
 		glActiveTexture(GL_TEXTURE0);
 		sky_shader.setUniform("env_map", 0);
-		// env_map.bind();
-		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getIrradianceID());
+		env_tex->bind();
 		sky_shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		// sky_shader.setUniform("viewMatrix", camera.getViewMatrix());
-		// sky_shader.setUniform("modelMatrix", mat4::identity());
-
 		sky_shader.setUniform("viewMatrix", mat4::cameraView(camera.getTransform().getForward(), camera.getTransform().getUp()));
 		sky_shader.setUniform("modelMatrix", mat4::identity());
 		glDepthMask(GL_FALSE);
