@@ -1,10 +1,16 @@
 # Project Epsilon - A simple c++ game engine
 ![Project Epsilon in engine screen](http://i.imgur.com/VKT7fYM.jpg)
 
-Project Epsilon is a simple c++ game engine currently in development. It currently builds on Linux and macOS, the Windows version will come later with cmake.
+Project Epsilon is a prototype c++ game engine currently in development. It currently builds on Linux and macOS, the Windows version will come later with cmake.
 
 ## Goals
 The main goal of the project is to create a simple c++ game engine that uses both OpenGL and Vulkan with Bullet Physics and the Autodesk FBX SDK. The engine currently runs on OpenGL with libLZ.
+
+ - **✔ Physically Based Rendering**
+ - Post processing effects
+ - Bullet physics implementation
+ - Autodesk FBX SDK implementation
+ - Animation support
 
 ## Dependencies
 Project Epsilon uses a number of projects to work:
