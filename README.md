@@ -16,7 +16,7 @@ The main goal of the project is to create a simple c++ game engine that uses bot
 Project Epsilon uses a number of projects to work:
 * [GLFW](https://github.com/glfw/glfw) - A multi-platform library for OpenGL, OpenGL ES, Vulkan, window and input
 * [GLEW](http://glew.sourceforge.net/) - The OpenGL Extension Wrangler Library
-* [libLZ]() - An OpenGL utility for windows, inputs, textures, meshes and more
+* [libLZ]() - An OpenGL utility by me for windows, inputs, textures, meshes and more
 
 Everything is provided in the deps folder.
 
@@ -28,5 +28,5 @@ $ make
 ```
 In the future, the Makefile will be replaced with cmake. The windows version will be available along it.
 
-## Licence
+## License
 Project Epsilon is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/TeamUbercube/ubercube).
