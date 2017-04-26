@@ -3,7 +3,9 @@ CC = g++
 FILES =\
 main.cpp\
 material.cpp\
-light.cpp
+light.cpp\
+mesh_renderer.cpp\
+skybox.cpp
 
 SRC = srcs/
 DIRS =		bin

@@ -45,6 +45,9 @@ void Display::create(const char *title, int width, int height)
 		std::cerr << "GLEW initialisation failed" << std::endl;
 		return;
 	}
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_FRONT);
 }
 
 Display::~Display()

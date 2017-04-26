@@ -36,7 +36,7 @@ GLuint Shader::createProgram(const char *vertex_source, const char *geometry_sou
 
 	GLuint vertex_shader = Shader::createShader(vertex_source, GL_VERTEX_SHADER);
 	glAttachShader(program, vertex_shader);
-	GLuint geometry_shader = NULL;
+	GLuint geometry_shader = 0;
 	if (geometry_source)
 	{
 		geometry_shader = Shader::createShader(geometry_source, GL_GEOMETRY_SHADER);

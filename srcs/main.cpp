@@ -1,6 +1,8 @@
 #include <LZ/lz.h>
 #include "material.h"
 #include "light.h"
+#include "mesh_renderer.h"
+#include "skybox.h"
 
 using namespace lz::maths;
 
@@ -15,31 +17,31 @@ int main(int ac, const char **av)
 	lz::Camera	camera		= lz::Camera(vec3(0, 0, 0));
 	lz::Input	input		= lz::Input(display.getWindow());
 	lz::Timer	timer		= lz::Timer();
-	lz::Mesh	*gun_model	= lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
-	lz::Mesh	*toilet		= lz::Resources::loadObj("data/models/Toilet.obj")->getMesh();
-	lz::Mesh	*sphere		= lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
-	lz::Mesh	*plane		= lz::Resources::loadObj("data/models/Plane.obj")->getMesh();
-	lz::Mesh	*skybox		= lz::Resources::loadObj("data/models/Cube.obj")->getMesh();
-	lz::Mesh	*terrain	= lz::Resources::loadObj("data/models/Terrain.obj")->getMesh();
-	lz::Cubemap env_map		= lz::Cubemap(av[1], 512);
 	lz::Texture *bref_lut	= lz::Resources::loadTexture("data/environments/BRDF_LUT.dds");
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT);
-
+	lz::Cubemap env_map		= lz::Cubemap(av[1], 512);
+	Skybox		skybox		= Skybox(&env_map);
 	Light		light		= Light(vec3(-5, 3, 2), vec3(1, 1, 1), 1.0);
-	Material 	mat 		= Material("PBR");
-	mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Grass_A.dds"));
-	mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Grass_N.dds"));
-	mat.addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Grass_R.dds"));
-	mat.addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Grass_M.dds"));
-	Material 	gun_mat		= Material("PBR_gun");
-	gun_mat.addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Cerberus_A.dds"));
-	gun_mat.addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Cerberus_N.dds"));
-	gun_mat.addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Cerberus_R.dds"));
-	gun_mat.addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Cerberus_M.dds"));
 
-	double updatedTime	= 0;
+	lz::Mesh	*gun_mesh = lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
+	Material 	*gun_material = new Material("gun_material");
+	gun_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Cerberus_A.dds"));
+	gun_material->addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Cerberus_N.dds"));
+	gun_material->addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Cerberus_R.dds"));
+	gun_material->addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Cerberus_M.dds"));
+	MeshRenderer *gun = new MeshRenderer(gun_mesh, gun_material);
+	gun->setScale(lz::maths::vec3(2, 2, 2));
+
+	lz::Mesh	*terrain_mesh = lz::Resources::loadObj("data/models/Terrain.obj")->getMesh();
+	Material 	*terrain_material = new Material("terrain_material");
+	terrain_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/Grass_A.dds"));
+	terrain_material->addTexture("normal_texture", lz::Resources::loadTexture("data/textures/Grass_N.dds"));
+	terrain_material->addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/Grass_R.dds"));
+	terrain_material->addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/Grass_M.dds"));
+	MeshRenderer *terrain = new MeshRenderer(terrain_mesh, terrain_material);
+	terrain->setPosition(lz::maths::vec3(0, -1, 0));
+
+	double updatedTime = 0;
 	int frames = 0;
 	double elapsed = 0;
 	double delta = 0;
@@ -59,23 +61,14 @@ int main(int ac, const char **av)
 		glClearColor(0.2, 0.2, 0.2, 1.0);
 		camera.perspective(70.0, display.getWidth(), display.getHeight(), 0.1, 1000.0);
 
-		sky_shader.bind();
-		glActiveTexture(GL_TEXTURE0);
-		sky_shader.setUniform("env_map", 0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getID());
-		sky_shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		sky_shader.setUniform("viewMatrix", mat4::cameraView(camera.getTransform().getForward(), camera.getTransform().getUp()));
-		sky_shader.setUniform("modelMatrix", mat4::identity());
-		glDepthMask(GL_FALSE);
-		glCullFace(GL_BACK);
-		skybox->draw();
-		glCullFace(GL_FRONT);
-		glDepthMask(GL_TRUE);
-		env_map.unbind();
+		skybox.render(&camera);
 
 		shader.bind();
-		mat.bind(&shader);
+		shader.setUniform("use_textures", 1);
 		light.bind(&shader);
+		shader.setUniform("cam_pos", camera.getTransform().getPosition());
+		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
+		shader.setUniform("viewMatrix", camera.getViewMatrix());
 
 		glActiveTexture(GL_TEXTURE5);
 		shader.setUniform("env_map", 5);
@@ -89,48 +82,22 @@ int main(int ac, const char **av)
 		shader.setUniform("brdf_lut", 7);
 		bref_lut->bind();
 
-		shader.setUniform("use_textures", 1);
-		shader.setUniform("cam_pos", camera.getTransform().getPosition());
-		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		shader.setUniform("viewMatrix", camera.getViewMatrix());
-
-		shader.setUniform("use_textures", 1);
-		shader.setUniform("albedo_color", vec3(1.00, 0.71, 0.29));
-		for (int x = 0; x < 6; x++)
-		{
-			for (int y = 0; y < 6; y++)
-			{
-				shader.setUniform("modelMatrix", mat4::translate(x * 1.2 - 3, y * 1.2, -3).mul(mat4::scale(0.5, 0.5, 0.5)));
-				shader.setUniform("roughness_factor", (GLfloat)((GLfloat)x / 6.0 + 0.02));
-				shader.setUniform("metalic_factor", (GLfloat)((GLfloat)y / 6.0));
-				sphere->draw();
-			}
-		}
-		shader.setUniform("use_textures", 1);
-
-		shader.setUniform("roughness_factor", (GLfloat)0.8);
-		shader.setUniform("modelMatrix", mat4::translate(0, 0, 2));
-		sphere->draw();
-
-		gun_mat.bind(&shader);
-		shader.setUniform("modelMatrix", mat4::translate(0, 3, 0).mul(mat4::rotate(0, 90, 0).mul(mat4::scale(4, 4, 4))));
-		gun_model->draw();
-
-		mat.bind(&shader);
-		shader.setUniform("modelMatrix", mat4::translate(0, -1, 0));
-		terrain->draw();
-
-		debug.bind();
-		debug.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		debug.setUniform("viewMatrix", camera.getViewMatrix());
-		debug.setUniform("modelMatrix", mat4::translate(0, 0, 2));
-		sphere->draw();
+		gun->render(&shader);
+		terrain->render(&shader);
 
 		display.update();
 		if (display.wasResized())
 			glViewport(0, 0, display.getWidth(), display.getHeight());
 		frames++;
 	}
-	delete gun_model;
+
+	delete gun_mesh;
+	delete gun_material;
+	delete gun;
+	delete terrain_mesh;
+	delete terrain_material;
+	delete terrain;
+	lz::Resources::clear();
+
 	return (0);
 }

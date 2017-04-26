@@ -7,6 +7,7 @@ namespace lz
 	Cubemap::Cubemap(const char *path, int size)
 	{
 		m_env_map = lz::Resources::loadTexture(path);
+		// TODO: generate a cube primitive 
 		m_cube = lz::Resources::loadObj("data/models/Cube.obj");
 		Cubemap::generateMipmaps(size);
 		Cubemap::generateIrradiance();
@@ -37,12 +38,10 @@ namespace lz
 		m_env_map->bind();
 		shader.setUniform("projectionMatrix", mat4::perspective(90.0, 1.0, 0.1, 2.0));
 		glBindFramebuffer(GL_FRAMEBUFFER, fbo);
-		float l_mip = 0.0;
 		for (int mip = 0; mip < 5; mip++)
 		{
 			int mip_size = size * std::pow(0.5, mip);
 			GLfloat roughness = mip / 4.0;
-			printf("%f  %i\n", roughness, mip);
 			shader.setUniform("roughness", roughness);
 			glViewport(0, 0, mip_size, mip_size);
 			glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, mip_size, mip_size);
@@ -64,7 +63,6 @@ namespace lz
 	{
 		GLuint fbo, rbo;
 		Shader shader = lz::Shader("data/shaders/cubemap_irradiance_v.glsl", "data/shaders/cubemap_irradiance_f.glsl");
-		lz::Mesh *cube = lz::Resources::loadObj("data/models/Cube.obj")->getMesh();
 
 		glGenTextures(1, &m_irradiance_id);
 		glGenFramebuffers(1, &fbo);
