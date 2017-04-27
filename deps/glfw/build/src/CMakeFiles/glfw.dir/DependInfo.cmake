@@ -4,23 +4,21 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/context.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/context.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/egl_context.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/egl_context.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/glx_context.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/glx_context.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/init.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/init.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/input.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/input.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/linux_joystick.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/linux_joystick.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/monitor.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/monitor.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/posix_time.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/posix_time.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/posix_tls.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/posix_tls.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/vulkan.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/vulkan.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/window.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/window.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/x11_init.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/x11_init.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/x11_monitor.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/x11_monitor.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/x11_window.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/x11_window.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/src/xkb_unicode.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/xkb_unicode.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/cocoa_init.m" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/cocoa_init.m.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/cocoa_joystick.m" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/cocoa_joystick.m.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/cocoa_monitor.m" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/cocoa_monitor.m.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/cocoa_time.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/cocoa_time.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/cocoa_window.m" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/cocoa_window.m.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/context.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/context.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/init.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/init.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/input.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/input.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/monitor.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/monitor.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/nsgl_context.m" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/nsgl_context.m.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/posix_tls.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/posix_tls.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/vulkan.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/vulkan.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/src/window.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/window.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "Clang")
 
 # Preprocessor definitions for this target.
 set(CMAKE_TARGET_DEFINITIONS_C

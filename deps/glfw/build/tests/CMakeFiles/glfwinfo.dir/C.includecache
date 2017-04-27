@@ -110,17 +110,17 @@ GL/glext.h
 GL/glu.h
 -
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/getopt.c
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/getopt.c
 getopt.h
-/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/getopt.h
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/getopt.h
 stddef.h
 -
 string.h
 -
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/getopt.h
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/getopt.h
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/glad.c
 stdio.h
 -
 stdlib.h
@@ -130,7 +130,7 @@ string.h
 glad/glad.h
 -
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/tests/glfwinfo.c
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/tests/glfwinfo.c
 vulkan/vulkan.h
 -
 glad/glad.h
@@ -144,5 +144,5 @@ stdlib.h
 string.h
 -
 getopt.h
-/home/marc/Documents/dev/rendering-engine/deps/glfw/tests/getopt.h
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/tests/getopt.h
 

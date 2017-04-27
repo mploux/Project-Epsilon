@@ -4,12 +4,12 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/getopt.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/getopt.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/glad.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/tinycthread.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/tinycthread.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/examples/particles.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/examples/CMakeFiles/particles.dir/particles.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/getopt.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/getopt.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/glad.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/glad.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/tinycthread.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/examples/CMakeFiles/particles.dir/__/deps/tinycthread.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/examples/particles.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/examples/CMakeFiles/particles.dir/particles.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "Clang")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
@@ -19,7 +19,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

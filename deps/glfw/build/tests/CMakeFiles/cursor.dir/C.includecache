@@ -108,7 +108,7 @@ GL/glext.h
 GL/glu.h
 -
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/glad.c
 stdio.h
 -
 stdlib.h
@@ -118,7 +118,7 @@ string.h
 glad/glad.h
 -
 
-/home/marc/Documents/dev/rendering-engine/deps/glfw/tests/cursor.c
+/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/tests/cursor.c
 glad/glad.h
 -
 GLFW/glfw3.h

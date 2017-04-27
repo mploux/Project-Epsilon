@@ -4,11 +4,11 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/getopt.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/tests/CMakeFiles/gamma.dir/__/deps/getopt.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/deps/glad.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/tests/CMakeFiles/gamma.dir/__/deps/glad.c.o"
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/tests/gamma.c" "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/tests/CMakeFiles/gamma.dir/gamma.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/getopt.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/tests/CMakeFiles/gamma.dir/__/deps/getopt.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/deps/glad.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/tests/CMakeFiles/gamma.dir/__/deps/glad.c.o"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/tests/gamma.c" "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/tests/CMakeFiles/gamma.dir/gamma.c.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_C_COMPILER_ID "Clang")
 
 # The include file search paths:
 set(CMAKE_C_TARGET_INCLUDE_PATH
@@ -18,7 +18,7 @@ set(CMAKE_C_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/marc/Documents/dev/rendering-engine/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
+  "/Users/mploux/Desktop/perso/github/Project-Epsilon/deps/glfw/build/src/CMakeFiles/glfw.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

@@ -41,6 +41,8 @@ int main(int ac, const char **av)
 	MeshRenderer *terrain = new MeshRenderer(terrain_mesh, terrain_material);
 	terrain->setPosition(lz::maths::vec3(0, -1, 0));
 
+	lz::Mesh	*sphere_mesh = lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
+
 	double updatedTime = 0;
 	int frames = 0;
 	double elapsed = 0;
@@ -84,6 +86,8 @@ int main(int ac, const char **av)
 
 		gun->render(&shader);
 		terrain->render(&shader);
+
+		sphere_mesh->draw();
 
 		display.update();
 		if (display.wasResized())
