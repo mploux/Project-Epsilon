@@ -36,8 +36,7 @@ BIN = bin/
 OBJS = $(addprefix bin/,$(FILES:.cpp=.o))
 
 INCLUDES = -I includes/LZ/ -I ../glfw/include/ -I ../glew/include/
-# GLFLAGS = 	-lglfw3 -lGL -lm -lGLU -lglew -lXrandr -lXi -lX11 -lXxf86vm \
-# 			-lpthread -ldl -lXinerama -lXcursor -lrt
+
 GLFLAGS =
 FLAGS = -std=c++11 $(GLFLAGS) $(INCLUDES) -pedantic -W -Wall -Wextra
 

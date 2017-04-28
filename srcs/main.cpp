@@ -48,7 +48,6 @@ int main(int ac, const char **av)
 	double elapsed = 0;
 	double delta = 0;
 
-	int i = 0;
 	while (!display.isClosed())
 	{
 		elapsed = timer.elapsed() - updatedTime;
