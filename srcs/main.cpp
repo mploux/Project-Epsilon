@@ -8,8 +8,9 @@ using namespace lz::maths;
 
 int main(int ac, const char **av)
 {
-	if (ac != 2)
-		sever("Usage: renderer env_map");
+	const char *path = "data/environments/Outside.dds";
+	if (ac == 2)
+		path = av[1];
 	lz::Display display		= lz::Display("Planet !", 1280, 720);
 	lz::Shader 	shader		= lz::Shader("data/shaders/main_v.glsl", "data/shaders/main_f.glsl");
 	lz::Shader 	debug		= lz::Shader("data/shaders/debug_v.glsl", "data/shaders/debug_g.glsl", "data/shaders/debug_f.glsl");
@@ -19,9 +20,9 @@ int main(int ac, const char **av)
 	lz::Timer	timer		= lz::Timer();
 	lz::Texture *bref_lut	= lz::Resources::loadTexture("data/environments/BRDF_LUT.dds");
 
-	lz::Cubemap env_map		= lz::Cubemap(av[1], 512);
+	lz::Cubemap env_map		= lz::Cubemap(path, 512);
 	Skybox		skybox		= Skybox(&env_map);
-	Light		light		= Light(vec3(-5, 3, 2), vec3(1, 1, 1), 1.0);
+	Light		light		= Light(vec3(-5, 3, 2), vec3(1, 1, 1), 3.0);
 
 	lz::Mesh	*gun_mesh = lz::Resources::loadObj("data/models/Cerberus.obj")->getMesh();
 	Material 	*gun_material = new Material("gun_material");
@@ -86,6 +87,7 @@ int main(int ac, const char **av)
 		gun->render(&shader);
 		terrain->render(&shader);
 
+		shader.setUniform("modelMatrix", mat4::translate(5, 2, 0));
 		sphere_mesh->draw();
 
 		display.update();

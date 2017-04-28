@@ -42,7 +42,7 @@ RM = rm -rf
 $(NAME): $(DIRS) $(OBJS)
 	@printf "\r$(GREEN)Compiling sources: DONE !                      $(NO_COLOR)\n";
 	@printf "Building liblz...\r"
-	@make --no-print-directory -C deps/liblz/ > /dev/null
+	@make --no-print-directory -C deps/liblz/
 	@printf "\r$(GREEN)Building liblz: DONE !$(NO_COLOR)\n";
 
 	@printf "Building libGLFW...\r"

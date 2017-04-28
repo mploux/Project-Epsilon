@@ -5,9 +5,16 @@ out vec4 out_color;
 
 struct Light
 {
-	vec3 position;
+	vec3 direction;
 	vec3 color;
 	float intensity;
+};
+
+struct PBR_data
+{
+	float roughness;
+	float metalic;
+	vec3 albedo;
 };
 
 uniform sampler2D albedo_texture;
@@ -65,6 +72,50 @@ vec3 fresnel_schlick_roughness(float cosTheta, vec3 F0, float roughness)
     return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
 }
 
+vec3 PBR(PBR_data data, Light light, vec3 normal)
+{
+	vec3 view = normalize(cam_pos - frag_pos.xyz);
+	vec3 reflected = reflect(-view, normal);
+
+	vec3 F0 = mix(vec3(0.04), data.albedo, data.metalic);
+
+	float dggx = distri_ggx(normal, normalize(view + light.direction), data.roughness);
+	float gs = geom_smith(normal, view, light.direction, data.roughness + 0.1);
+	vec3 fresnel = fresnel_schlick(dot(normalize(view + light.direction), view), F0);
+
+	vec3 nominator = dggx * gs * fresnel;
+	float denominator = 4 * max(dot(normal, view), 0.0) * max(dot(normal, light.direction), 0.0) + 0.001;
+	vec3 brdf = nominator / denominator;
+
+	vec3 kS = fresnel;
+	vec3 kD = vec3(1.0) - kS;
+	kD *= 1.0 - data.metalic;
+	float NdotL = max(dot(normal, light.direction), 0.0);
+	vec3 light_color = (kD * data.albedo / PI + brdf) * light.color * NdotL * light.intensity;
+	//--
+
+	vec3 fresnel_r = fresnel_schlick_roughness(max(dot(normal, view), 0.0), F0, data.roughness);
+
+    vec3 kS_r = fresnel_r;
+    vec3 kD_r = 1.0 - kS_r;
+	kD_r *= 1.0 - data.metalic;
+
+	vec3 irradiance = texture(irradiance_map, normal).rgb;
+	vec3 diffuse = irradiance * data.albedo;
+
+	vec3 specular_env = textureLod(env_map, reflected, data.roughness * 4).rgb;
+	vec2 env_brdf  = texture(brdf_lut, vec2(max(dot(normal, view), 0.0), data.roughness)).rg;
+	vec3 specular = specular_env * (fresnel_r * env_brdf.x + env_brdf.y);
+
+	vec3 ambient = kD_r * diffuse + specular;
+	return (ambient + light_color);
+}
+
+vec3 calc_normal_mapping(mat3 tbn_matrix, sampler2D normal_texture, vec2 texcoord)
+{
+	return (normalize(tbn_matrix * (2.0 * texture(normal_texture, texcoord).rgb - 1.0)));
+}
+
 void main(void)
 {
 	float roughness = texture(roughness_texture, v_texcoord).r;
@@ -78,43 +129,14 @@ void main(void)
 		albedo = albedo_color;
 	}
 
-	vec3 normal = normalize(tbn_matrix * (2.0 * texture(normal_texture, v_texcoord).rgb - 1.0));
-	vec3 view = normalize(cam_pos - frag_pos.xyz);
-	vec3 reflected = reflect(-view, normal);
-	vec3 light = normalize(vec3(1, 1, 1));
+	vec3 normal = calc_normal_mapping(tbn_matrix, normal_texture, v_texcoord);
 
-	vec3 F0 = mix(vec3(0.04), albedo, metalic);
+	PBR_data data;
+	data.albedo = albedo;
+	data.roughness = roughness;
+	data.metalic = metalic;
 
-	float dggx = distri_ggx(normal, normalize(view + light), roughness);
-	float gs = geom_smith(normal, view, light, roughness + 0.1);
-	vec3 fresnel = fresnel_schlick(dot(normalize(view + light), view), F0);
+	vec3 pbr_color = PBR(data, light, normal);
 
-	vec3 nominator = dggx * gs * fresnel;
-	float denominator = 4 * max(dot(normal, view), 0.0) * max(dot(normal, light), 0.0) + 0.001;
-	vec3 brdf = nominator / denominator;
-
-	vec3 kS = fresnel;
-	vec3 kD = vec3(1.0) - kS;
-	kD *= 1.0 - metalic;
-	float NdotL = max(dot(normal, light), 0.0);
-	vec3 light_color = (kD * albedo / PI + brdf) * vec3(1, 1, 1) * NdotL;
-	//--
-
-	vec3 fresnel_r = fresnel_schlick_roughness(max(dot(normal, view), 0.0), F0, roughness);
-
-    vec3 kS_r = fresnel_r;
-    vec3 kD_r = 1.0 - kS_r;
-	kD_r *= 1.0 - metalic;
-
-	vec3 irradiance = texture(irradiance_map, normal).rgb;
-	vec3 diffuse = irradiance * albedo;
-
-	vec3 specular_env = textureLod(env_map, reflected, roughness * 4).rgb;
-	vec2 env_brdf  = texture(brdf_lut, vec2(max(dot(normal, view), 0.0), roughness)).rg;
-	vec3 specular = specular_env * (fresnel_r * env_brdf.x + env_brdf.y);
-
-	vec3 ambient = kD_r * diffuse + specular;
-	vec3 color = ambient + light_color;
-
-	out_color = vec4(color, 1.0);
+	out_color = vec4(pbr_color, 1.0);
 }

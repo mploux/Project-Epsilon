@@ -36,7 +36,7 @@ namespace lz
 
 		Mesh *m_mesh;
 
-		void calcTangent(int index, VertexIndex i0, VertexIndex i1, VertexIndex i2);
+		void calcTangents();
 
 	public:
 		ObjLoader(const char *path);

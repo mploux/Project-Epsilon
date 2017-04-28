@@ -124,14 +124,9 @@ ObjLoader::ObjLoader(const char *path)
 
 		m_indices.buffer[i] = i;
 	}
-	for (int i = 0; i < m_indicesSize; i += 3)
-	{
-		ObjLoader::calcTangent(i,
-			m_loadedIndices[i],
-			m_loadedIndices[i + 1],
-			m_loadedIndices[i + 2]
-		);
-	}
+
+	ObjLoader::calcTangents();
+
 	m_mesh = new Mesh(m_indicesSize);
 	m_mesh->setPositions(m_positions);
 	m_mesh->setNormals(m_normals);
@@ -141,33 +136,41 @@ ObjLoader::ObjLoader(const char *path)
 	m_mesh->create();
 }
 
-void ObjLoader::calcTangent(int index, VertexIndex i0, VertexIndex i1, VertexIndex i2)
+void ObjLoader::calcTangents()
 {
-	vec3 edge1 = vec3(
-		m_loadedPositions[i1.position * 3 + 0] - m_loadedPositions[i0.position * 3 + 0],
-		m_loadedPositions[i1.position * 3 + 1] - m_loadedPositions[i0.position * 3 + 1],
-		m_loadedPositions[i1.position * 3 + 2] - m_loadedPositions[i0.position * 3 + 2]
-	);
-	vec3 edge2 = vec3(
-		m_loadedPositions[i2.position * 3 + 0] - m_loadedPositions[i0.position * 3 + 0],
-		m_loadedPositions[i2.position * 3 + 1] - m_loadedPositions[i0.position * 3 + 1],
-		m_loadedPositions[i2.position * 3 + 2] - m_loadedPositions[i0.position * 3 + 2]
-	);
+	for (int i = 0; i < m_indicesSize; i += 3)
+	{
+		int i0 = m_indices.buffer[i];
+		int i1 = m_indices.buffer[i + 1];
+		int i2 = m_indices.buffer[i + 2];
 
-	float deltaU1 = m_loadedTexCoords[i1.texcoord * 2 + 0] - m_loadedTexCoords[i0.texcoord * 2 + 0];
-	float deltaV1 = m_loadedTexCoords[i1.texcoord * 2 + 1] - m_loadedTexCoords[i0.texcoord * 2 + 1];
-	float deltaU2 = m_loadedTexCoords[i2.texcoord * 2 + 0] - m_loadedTexCoords[i0.texcoord * 2 + 0];
-	float deltaV2 = m_loadedTexCoords[i2.texcoord * 2 + 1] - m_loadedTexCoords[i0.texcoord * 2 + 1];
+		vec3 edge1 = vec3(
+			m_positions.buffer[i1 * 3 + 0] - m_positions.buffer[i0 * 3 + 0],
+			m_positions.buffer[i1 * 3 + 1] - m_positions.buffer[i0 * 3 + 1],
+			m_positions.buffer[i1 * 3 + 2] - m_positions.buffer[i0 * 3 + 2]
+		);
+		vec3 edge2 = vec3(
+			m_positions.buffer[i2 * 3 + 0] - m_positions.buffer[i0 * 3 + 0],
+			m_positions.buffer[i2 * 3 + 1] - m_positions.buffer[i0 * 3 + 1],
+			m_positions.buffer[i2 * 3 + 2] - m_positions.buffer[i0 * 3 + 2]
+		);
 
-	float f = 1.0f / (deltaU1 * deltaV2 - deltaU2 * deltaV1);
-	vec3 tangent = vec3(
-		f * (deltaV2 * edge1.x - deltaV1 * edge2.x),
-		f * (deltaV2 * edge1.y - deltaV1 * edge2.y),
-		f * (deltaV2 * edge1.z - deltaV1 * edge2.z)
-	).normalize();
-	m_tangents.buffer[index * 3 + 0] = tangent.x;
-	m_tangents.buffer[index * 3 + 1] = tangent.y;
-	m_tangents.buffer[index * 3 + 2] = tangent.z;
+		float deltaU1 = m_texCoords.buffer[i1 * 2 + 0] - m_texCoords.buffer[i0 * 2 + 0];
+		float deltaV1 = m_texCoords.buffer[i1 * 2 + 1] - m_texCoords.buffer[i0 * 2 + 1];
+		float deltaU2 = m_texCoords.buffer[i2 * 2 + 0] - m_texCoords.buffer[i0 * 2 + 0];
+		float deltaV2 = m_texCoords.buffer[i2 * 2 + 1] - m_texCoords.buffer[i0 * 2 + 1];
+
+		float dividend = (deltaU1 * deltaV2 - deltaU2 * deltaV1);
+		float f = dividend == 0 ? 0.0f : 1.0f / dividend;
+		vec3 tangent = vec3(
+			f * (deltaV2 * edge1.x - deltaV1 * edge2.x),
+			f * (deltaV2 * edge1.y - deltaV1 * edge2.y),
+			f * (deltaV2 * edge1.z - deltaV1 * edge2.z)
+		);
+		m_tangents.buffer[i0 * 3 + 0] = tangent.x;
+		m_tangents.buffer[i1 * 3 + 1] = tangent.y;
+		m_tangents.buffer[i2 * 3 + 2] = tangent.z;
+	}
 }
 
 ObjLoader::~ObjLoader()
