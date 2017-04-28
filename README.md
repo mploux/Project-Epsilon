@@ -29,4 +29,4 @@ $ make
 In the future, the Makefile will be replaced with cmake. The windows version will be available along it.
 
 ## License
-Project Epsilon is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/TeamUbercube/ubercube).
+Project Epsilon is fully open source and licensed under the [GNU 3.0 License](http://www.gnu.org/licenses/) and available in source code form at [GitHub](https://github.com/mploux/Project-Epsilon).
