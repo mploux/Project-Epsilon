@@ -136,7 +136,7 @@ void main(void)
 	data.roughness = roughness;
 	data.metalic = metalic;
 
-	vec3 pbr_color = PBR(data, light, normal);
+	vec3 pbr_color = PBR(data, light, v_normal);
 
 	out_color = vec4(pbr_color, 1.0);
 }
