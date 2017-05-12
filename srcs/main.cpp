@@ -26,14 +26,14 @@ int main(int ac, const char **av)
 
 	lz::Mesh	*gun_mesh = lz::Resources::loadObj("data/models/R2D2.obj")->getMesh();
 	Material 	*gun_material = new Material("gun_material");
-	gun_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/R2D2_Diffuse.dds"));
+	gun_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/R2D2_A.dds"));
 	gun_material->addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/R2D2_R.dds"));
 	gun_material->addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/R2D2_M.dds"));
 	MeshRenderer *gun = new MeshRenderer(gun_mesh, gun_material);
 
 	lz::Mesh	*terrain_mesh = lz::Resources::loadObj("data/models/X-Fighter.obj")->getMesh();
 	Material 	*terrain_material = new Material("terrain_material");
-	terrain_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/XWing_Diffuse_01.dds"));
+	terrain_material->addTexture("albedo_texture", lz::Resources::loadTexture("data/textures/XWing_A.dds"));
 	terrain_material->addTexture("roughness_texture", lz::Resources::loadTexture("data/textures/XWing_R.dds"));
 	terrain_material->addTexture("metalic_texture", lz::Resources::loadTexture("data/textures/XWing_M.dds"));
 	MeshRenderer *terrain = new MeshRenderer(terrain_mesh, terrain_material);
@@ -51,8 +51,6 @@ int main(int ac, const char **av)
 		elapsed = timer.elapsed() - updatedTime;
 		delta = elapsed / 60.0;
 		updatedTime = timer.elapsed();
-
-	glEnable(GL_MULTISAMPLE);
 
 		camera.update();
 		camera.control(&input, delta * 0.5);

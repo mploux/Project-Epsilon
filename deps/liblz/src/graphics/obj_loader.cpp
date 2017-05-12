@@ -21,7 +21,10 @@ ObjLoader::ObjLoader(const char *path)
 	m_indicesSize = 0;
 	printf("loading:%s\n", path);
 	if ((fp = fopen(path, "r")) == NULL)
-		sever("Unable to load file !");
+	{
+		std::cout << "ERROR: Unable to load model: " << path << std::endl;
+		exit(-1);
+	}
 	while (fgets(line, 256, fp))
 	{
 		char **tokens = str_split(line, ' ');

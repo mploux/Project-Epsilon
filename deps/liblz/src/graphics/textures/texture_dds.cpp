@@ -1,3 +1,4 @@
+#include <iostream>
 #include "texture.h"
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII
 #define FOURCC_DXT3 0x33545844 // Equivalent to "DXT3" in ASCII
@@ -11,13 +12,15 @@ namespace lz
 		FILE *result;
 
 		result = fopen(path, "rb");
-		if (result == NULL){
-			sever("Could not open dds file !");
-			return 0;
+		if (result == NULL)
+		{
+			std::cout << "ERROR: Unable to load texture: " << path << std::endl;
+			exit(-1);
 		}
 		char filecode[4];
 		fread(filecode, 1, 4, result);
-		if (strncmp(filecode, "DDS ", 4) != 0) {
+		if (strncmp(filecode, "DDS ", 4) != 0)
+		{
 			fclose(result);
 			return 0;
 		}
