@@ -8,7 +8,7 @@ mesh_renderer.cpp\
 skybox.cpp
 
 SRC = srcs/
-DIRS =		bin
+DIRS = bin
 
 SYSTEM = $(shell uname -s)
 
