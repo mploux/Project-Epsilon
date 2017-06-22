@@ -18,7 +18,7 @@ vec2 sphere_to_uv(vec3 v)
 }
 
 /* Van Der Corpus sequence */
-float vdc(int bits)
+float vdc(uint bits)
 {
     bits = (bits << 16) | (bits >> 16);
     bits = ((bits & 0x55555555) << 1) | ((bits & 0xAAAAAAAA) >> 1);

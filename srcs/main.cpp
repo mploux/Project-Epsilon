@@ -1,7 +1,7 @@
 #include <LZ/lz.h>
 #include "material.h"
 #include "light.h"
-#include "mesh_renderer.h"
+#include "rendering/mesh_renderer.h"
 #include "skybox.h"
 
 using namespace lz::maths;
@@ -82,10 +82,10 @@ int main(int ac, const char **av)
 		bref_lut->bind();
 
 		gun->render(&shader);
-		terrain->render(&shader);
+//		terrain->render(&shader);
 
-		shader.setUniform("modelMatrix", mat4::translate(5, 2, 0));
-		sphere_mesh->draw();
+//		shader.setUniform("modelMatrix", mat4::translate(5, 2, 0));
+//		sphere_mesh->draw();
 
 		display.update();
 		if (display.wasResized())

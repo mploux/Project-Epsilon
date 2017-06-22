@@ -4,7 +4,7 @@ FILES =\
 main.cpp\
 material.cpp\
 light.cpp\
-mesh_renderer.cpp\
+rendering/mesh_renderer.cpp\
 skybox.cpp
 
 SRC = srcs/

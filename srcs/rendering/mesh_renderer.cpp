@@ -1,4 +1,4 @@
-#include "mesh_renderer.h"
+#include "rendering/mesh_renderer.h"
 
 MeshRenderer::MeshRenderer(lz::Mesh *mesh, Material *mat)
 {
