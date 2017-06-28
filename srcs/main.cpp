@@ -2,6 +2,7 @@
 #include "material.h"
 #include "light.h"
 #include "rendering/mesh_renderer.h"
+#include "rendering/rendering_engine.h"
 #include "skybox.h"
 
 using namespace lz::maths;
@@ -11,14 +12,15 @@ int main(int ac, const char **av)
 	const char *path = "data/environments/Outside.dds";
 	if (ac == 2)
 		path = av[1];
-	lz::Display display		= lz::Display("Planet !", 1280, 720);
+	lz::Display display		= lz::Display("Planet !", 900, 600);
 	lz::Shader 	shader		= lz::Shader("data/shaders/main_v.glsl", "data/shaders/main_f.glsl");
 	lz::Shader 	debug		= lz::Shader("data/shaders/debug_v.glsl", "data/shaders/debug_g.glsl", "data/shaders/debug_f.glsl");
 	lz::Shader 	sky_shader	= lz::Shader("data/shaders/skybox_v.glsl", "data/shaders/skybox_f.glsl");
 	lz::Camera	camera		= lz::Camera(vec3(0, 0, 0));
 	lz::Input	input		= lz::Input(display.getWindow());
 	lz::Timer	timer		= lz::Timer();
-	lz::Texture *bref_lut	= lz::Resources::loadTexture("data/environments/BRDF_LUT.dds");
+
+	RenderingEngine *render	= new RenderingEngine();
 
 	lz::Cubemap env_map		= lz::Cubemap(path, 512);
 	Skybox		skybox		= Skybox(&env_map);
@@ -41,6 +43,13 @@ int main(int ac, const char **av)
 
 	lz::Mesh	*sphere_mesh = lz::Resources::loadObj("data/models/Sphere.obj")->getMesh();
 
+	render->setCamera(&camera);
+	render->setShader(&shader);
+	render->setLight(&light);
+	render->setEnvMap(&env_map);
+	render->addMesh(gun);
+	render->addMesh(terrain);
+
 	double updatedTime = 0;
 	int frames = 0;
 	double elapsed = 0;
@@ -62,30 +71,7 @@ int main(int ac, const char **av)
 
 		skybox.render(&camera);
 
-		shader.bind();
-		shader.setUniform("use_textures", 1);
-		light.bind(&shader);
-		shader.setUniform("cam_pos", camera.getTransform().getPosition());
-		shader.setUniform("projectionMatrix", camera.getProjectionMatrix());
-		shader.setUniform("viewMatrix", camera.getViewMatrix());
-
-		glActiveTexture(GL_TEXTURE5);
-		shader.setUniform("env_map", 5);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getID());
-
-		glActiveTexture(GL_TEXTURE6);
-		shader.setUniform("irradiance_map", 6);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, env_map.getIrradianceID());
-
-		glActiveTexture(GL_TEXTURE7);
-		shader.setUniform("brdf_lut", 7);
-		bref_lut->bind();
-
-		gun->render(&shader);
-		terrain->render(&shader);
-
-		shader.setUniform("modelMatrix", mat4::translate(5, 2, 0));
-		sphere_mesh->draw();
+		render->render();
 
 		display.update();
 		if (display.wasResized())
@@ -100,6 +86,7 @@ int main(int ac, const char **av)
 	delete terrain_material;
 	delete terrain;
 	lz::Resources::clear();
+	delete render;
 
 	return (0);
 }

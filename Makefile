@@ -5,6 +5,7 @@ main.cpp\
 material.cpp\
 light.cpp\
 rendering/mesh_renderer.cpp\
+rendering/rendering_engine.cpp\
 skybox.cpp
 
 SRC = srcs/
