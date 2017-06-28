@@ -1,4 +1,4 @@
-#version 400 core
+#version 330 core
 #define PI 3.14159265359
 #define SAMPLE_COUNT 1024
 
@@ -17,22 +17,31 @@ vec2 sphere_to_uv(vec3 v)
     return uv;
 }
 
-/* Van Der Corpus sequence */
-float vdc(uint bits)
+float VanDerCorpus(int n, int base)
 {
-    bits = (bits << 16) | (bits >> 16);
-    bits = ((bits & 0x55555555) << 1) | ((bits & 0xAAAAAAAA) >> 1);
-    bits = ((bits & 0x33333333) << 2) | ((bits & 0xCCCCCCCC) >> 2);
-    bits = ((bits & 0x0F0F0F0F) << 4) | ((bits & 0xF0F0F0F0) >> 4);
-    bits = ((bits & 0x00FF00FF) << 8) | ((bits & 0xFF00FF00) >> 8);
-    return float(bits) * 2.3283064365386963e-10;
-}
+    float invBase = 1.0 / float(base);
+    float denom   = 1.0;
+    float result  = 0.0;
 
-/* Hammersley Sequence */
+    for(int i = 0; i < 32; ++i)
+    {
+        if(n > 0)
+        {
+            denom   = mod(float(n), 2.0);
+            result += denom * invBase;
+            invBase = invBase / 2.0;
+            n       = int(float(n) / 2.0);
+        }
+    }
+
+    return result;
+}
+// ----------------------------------------------------------------------------
 vec2 hammersley(int i, int N)
 {
-    return vec2(float(i)/float(N), vdc(i));
+    return vec2(float(i)/float(N), VanDerCorpus(i, 2));
 }
+
 
 /* GGX Importance sampling */
 vec3 ggx(vec2 Xi, vec3 N, float roughness)
